@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-ризики для професій в Україні</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0e0f11;
+  --surface:#16181c;
+  --border:#2a2d35;
+  --text:#e8e9ec;
+  --muted:#7a7f8e;
+  --accent:#5b7cf6;
+}
+body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;min-height:100vh;padding:0;}
+header{
+  padding:2.5rem 3rem 2rem;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap;
+}
+.logo{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;letter-spacing:0.12em;color:var(--muted);
+  text-transform:uppercase;margin-bottom:8px;
+}
+h1{
+  font-size:clamp(22px,3vw,36px);
+  font-weight:300;
+  letter-spacing:-0.02em;
+  line-height:1.2;
+  color:var(--text);
+}
+h1 em{font-style:normal;color:var(--accent);}
+.meta{
+  font-size:12px;color:var(--muted);font-family:'IBM Plex Mono',monospace;
+  line-height:1.8;text-align:right;
+}
+.wrap{padding:2rem 3rem 3rem;}
+.controls{
+  display:flex;align-items:center;gap:24px;margin-bottom:1.5rem;flex-wrap:wrap;
+}
+.ctrl-group{display:flex;align-items:center;gap:10px;}
+.ctrl-label{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;}
+input[type=range]{
+  -webkit-appearance:none;appearance:none;
+  width:120px;height:3px;background:var(--border);border-radius:2px;outline:none;cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:14px;height:14px;border-radius:50%;
+  background:var(--accent);cursor:pointer;border:2px solid var(--bg);
+}
+#fv{font-size:13px;font-weight:500;font-family:'IBM Plex Mono',monospace;color:var(--text);min-width:28px;}
+.legend{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.leg-bar{width:120px;height:5px;border-radius:3px;background:linear-gradient(to right,#3da86d,#d4913a,#c93a3a);}
+.leg-l{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.5rem;}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;}
+.stat-l{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;}
+.stat-v{font-size:22px;font-weight:500;color:var(--text);}
+#tw{position:relative;width:100%;margin-bottom:1.5rem;}
+#tm{display:block;width:100%;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+#tip{
+  position:absolute;background:#1e2128;
+  border:1px solid var(--border);border-radius:8px;
+  padding:12px 14px;font-size:12px;max-width:230px;
+  pointer-events:none;display:none;z-index:100;
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+}
+#tip .t-name{font-weight:500;font-size:13px;color:var(--text);margin-bottom:3px;}
+#tip .t-cat{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;}
+#tip .t-score{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;margin-bottom:6px;}
+#tip .t-row{font-size:11px;color:var(--muted);line-height:1.7;}
+#tip .t-hint{font-size:10px;color:var(--accent);margin-top:8px;font-family:'IBM Plex Mono',monospace;}
+#dp{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:1.25rem 1.5rem;display:none;
+  animation:fadeIn 0.25s ease;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.dp-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+#dn{font-weight:500;font-size:16px;color:var(--text);}
+#db{font-size:10px;padding:3px 10px;border-radius:20px;font-family:'IBM Plex Mono',monospace;font-weight:500;letter-spacing:0.05em;}
+#dc{font-size:13px;color:var(--muted);line-height:1.75;}
+
+
+footer{
+  border-top:1px solid var(--border);padding:1.25rem 3rem;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;
+}
+.ft{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;line-height:1.8;}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+.about{border-top:1px solid var(--border);padding:2.5rem 3rem;background:var(--surface);}
+.about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2rem;margin-top:1.5rem;}
+.about-block{}
+.about-title{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);margin-bottom:10px;}
+.about-text{font-size:13px;color:var(--muted);line-height:1.8;}
+.about-text strong{color:var(--text);font-weight:500;}
+.about-text a{color:var(--accent);}
+.about-text ul{padding-left:1.1em;margin-top:6px;}
+.about-text ul li{margin-bottom:4px;}
+.warn{background:#2a2000;border:1px solid #4a3800;border-radius:6px;padding:10px 14px;margin-top:10px;font-size:12px;color:#c8a84b;line-height:1.7;}
+.about-h{font-size:18px;font-weight:300;color:var(--text);letter-spacing:-0.01em;}
+@media(max-width:640px){.about{padding-left:1.25rem;padding-right:1.25rem;}}
+@media(max-width:640px){
+  header,footer,.wrap{padding-left:1.25rem;padding-right:1.25rem;}
+  .stats{grid-template-columns:1fr 1fr;}
+  .meta{text-align:left;}
+  .legend{margin-left:0;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">Аналітика ринку праці</div>
+    <h1>AI-ризики для <em>професій</em><br>в Україні</h1>
+  </div>
+  <div class="meta">
+    ~50 професій · КП України<br>
+    Держстат 2021 · оцінка 0–10<br>
+    Натисніть на блок для аналізу
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="stats">
+    <div class="stat"><div class="stat-l">Зайнятість</div><div class="stat-v" id="s1">—</div></div>
+    <div class="stat"><div class="stat-l">Середній ризик</div><div class="stat-v" id="s2">—</div></div>
+    <div class="stat"><div class="stat-l">Під загрозою (7+)</div><div class="stat-v" id="s3">—</div></div>
+    <div class="stat"><div class="stat-l">Безпечно (≤3)</div><div class="stat-v" id="s4">—</div></div>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <span class="ctrl-label">Фільтр від балу:</span>
+      <input type="range" min="0" max="9" step="1" value="0" id="flt">
+      <span id="fv">0+</span>
+    </div>
+    <div class="legend">
+      <span class="leg-l">Безпечно</span>
+      <div class="leg-bar"></div>
+      <span class="leg-l">Під загрозою</span>
+    </div>
+  </div>
+
+  <div id="tw">
+    <svg id="tm"></svg>
+    <div id="tip">
+      <div class="t-name" id="ti-n"></div>
+      <div class="t-cat" id="ti-c"></div>
+      <div class="t-score" id="ti-s"></div>
+      <div class="t-row" id="ti-r"></div>
+      <div class="t-hint">← клік для AI-аналізу</div>
+    </div>
+  </div>
+
+  <div id="dp">
+    <div class="dp-head">
+      <span id="dn"></span>
+      <span id="db"></span>
+    </div>
+    <div id="dc"></div>
+  </div>
+
+  <div id="ins-section" style="margin-top:2rem;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem 1.5rem;margin-bottom:14px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:6px;">Страхування та фінанси — окремий фокус</div>
+          <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:6px;">Високий AI-ризик = висока цінність людини з AI-навичками</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.75;max-width:640px;">Актуарії та андеррайтери мають оцінку 8.5–9.0 не тому що зникнуть, а тому що весь їхній продукт цифровий. Це означає: той хто першим освоїть AI-інструменти <em style="color:var(--text);font-style:normal;font-weight:500;">замінить десятьох колег</em>, а не буде замінений. В Україні таких спеціалістів ~3–4 тис. — дефіцит гарантований.</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 16px;min-width:140px;text-align:center;flex-shrink:0;">
+          <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">середній ризик</div>
+          <div id="ins-avg" style="font-size:28px;font-weight:500;color:var(--text);">—</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px;">по сектору</div>
+        </div>
+      </div>
+    </div>
+    <div id="ins-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;"></div>
+  </div>
+
+</div>
+
+<section class="about">
+  <div class="logo">Методологія та джерела</div>
+  <div class="about-h">Як побудована ця візуалізація</div>
+
+  <div class="about-grid">
+
+    <div class="about-block">
+      <div class="about-title">Дані про зайнятість</div>
+      <div class="about-text">
+        Показники зайнятості взяті з <strong>Держстат України</strong> — обстеження економічної активності населення 2021 року (останні повні дані до повномасштабного вторгнення, ~15,9 млн зайнятих).
+        <br><br>
+        <strong>Важливе обмеження:</strong> Держстат публікує зайнятість по <strong>КВЕД</strong> (галузях), а не по окремих професіях. На відміну від американського BLS, який надає детальну статистику по кожній із 342 спеціальностей, в Україні аналогічного відкритого реєстру немає.
+        <br><br>
+        Тому чисельність по конкретних професіях — це <strong>розрахункова апроксимація</strong>, отримана шляхом розподілу галузевих агрегатів Держстату на типові частки за структурою зайнятості МОП / ILO для країн Східної Європи (ISCO-08 distributions).
+      </div>
+    </div>
+
+    <div class="about-block">
+      <div class="about-title">Класифікація професій</div>
+      <div class="about-text">
+        Перелік спеціальностей побудований на базі <strong>Класифікатора Професій України (КП)</strong> — національного стандарту Мінекономіки, що базується на міжнародній класифікації <strong>ISCO-08 (ILO)</strong>.
+        <br><br>
+        Вибірка охоплює <strong>56 репрезентативних груп</strong> із 10 розділів КП:
+        <ul>
+          <li>Керівники та менеджери</li>
+          <li>Фахівці з вищою освітою</li>
+          <li>Технічні фахівці</li>
+          <li>Офісні службовці</li>
+          <li>Торгівля та послуги</li>
+          <li>Сільське господарство</li>
+          <li>Кваліфіковані робітники</li>
+          <li>Оператори та водії</li>
+          <li>Допоміжний персонал</li>
+          <li>Страхування та фінанси</li>
+        </ul>
+        Дані по зарплатах — середні ринкові показники 2023–2024 (Держстат + Work.ua + Robota.ua).
+      </div>
+    </div>
+
+    <div class="about-block">
+      <div class="about-title">Методологія AI-ризику</div>
+      <div class="about-text">
+        Оцінка від 0 до 10 побудована за критерієм <strong>Андрія Карпаті</strong> (ex-Tesla, ex-OpenAI):
+        <br><br>
+        <em>«Якщо результат роботи повністю цифровий, а саму роботу можна виконувати повністю з дому — ризик заміни AI є високим».</em>
+        <br><br>
+        Шкала враховує два виміри:
+        <ul>
+          <li><strong>Пряма автоматизація</strong> — AI виконує роботу замість людини</li>
+          <li><strong>Непряма автоматизація</strong> — AI підвищує продуктивність настільки, що потрібно менше людей</li>
+        </ul>
+        Природний захист мають професії, що вимагають фізичної присутності, ручної навички або живої людської взаємодії. Оцінки для українських спеціальностей виставлені <strong>Claude (Anthropic)</strong> на основі цього критерію.
+      </div>
+    </div>
+
+    <div class="about-block">
+      <div class="about-title">Що це не є</div>
+      <div class="about-text">
+        <div class="warn">
+          Ця візуалізація — <strong>демонстраційний прототип</strong>, а не офіційне дослідження.
+          <br><br>
+          Дані по зайнятості є приблизними через відсутність відкритої детальної статистики по професіях в Україні. Після 2022 року структура зайнятості суттєво змінилась — актуальних даних на рівні окремих спеціальностей наразі немає у відкритому доступі.
+          <br><br>
+          Для повноцінного дослідження потрібен: ILO ILOSTAT (ISCO-дані по Україні) + скрейпінг вакансій Work.ua / Robota.ua + дані ДЗО (Державна служба зайнятості).
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="ft">КП України (Мінекономіки) · Держстат 2021 · ILO ISCO-08 · Work.ua / Robota.ua (зарплати 2024)</div>
+  <div class="ft">Натхнення: <a href="https://joshkale.github.io/jobs/" target="_blank">joshkale.github.io/jobs</a> · <a href="https://github.com/karpathy/jobs" target="_blank">github/karpathy/jobs</a></div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+const D=[
+  {c:"Керівники",n:"Директори підприємств",e:450,s:30000,r:6.0},
+  {c:"Керівники",n:"Держ. службовці (керівники)",e:150,s:25000,r:5.5},
+  {c:"Керівники",n:"Менеджери проєктів",e:100,s:45000,r:7.0},
+  {c:"Фахівці",n:"Програмісти / ІТ-розробники",e:200,s:100000,r:8.5},
+  {c:"Фахівці",n:"Аналітики даних",e:40,s:90000,r:9.0},
+  {c:"Фахівці",n:"Лікарі",e:220,s:20000,r:5.0},
+  {c:"Фахівці",n:"Вчителі",e:480,s:12000,r:6.0},
+  {c:"Фахівці",n:"Вихователі дитсадків",e:120,s:9000,r:3.5},
+  {c:"Фахівці",n:"Юристи / правники",e:90,s:25000,r:7.0},
+  {c:"Фахівці",n:"Бухгалтери",e:400,s:18000,r:8.0},
+  {c:"Фахівці",n:"Фінансові аналітики",e:60,s:40000,r:8.5},
+  {c:"Фахівці",n:"Інженери-будівельники",e:180,s:22000,r:5.5},
+  {c:"Фахівці",n:"Інженери-механіки",e:150,s:20000,r:5.5},
+  {c:"Фахівці",n:"Журналісти / редактори",e:50,s:20000,r:8.0},
+  {c:"Фахівці",n:"Перекладачі",e:30,s:18000,r:9.0},
+  {c:"Фахівці",n:"Маркетологи",e:80,s:25000,r:7.5},
+  {c:"Фахівці",n:"Архітектори",e:35,s:30000,r:7.0},
+  {c:"Фахівці",n:"Психологи",e:40,s:15000,r:5.0},
+  {c:"Фахівці",n:"Соціальні працівники",e:130,s:10000,r:3.5},
+  {c:"Фахівці",n:"Агрономи",e:70,s:18000,r:5.0},
+  {c:"Технічні фахівці",n:"Медсестри / акушерки",e:380,s:12000,r:3.0},
+  {c:"Технічні фахівці",n:"ІТ-техніки / сисадміни",e:90,s:35000,r:6.0},
+  {c:"Технічні фахівці",n:"Агенти з нерухомості",e:60,s:20000,r:6.5},
+  {c:"Технічні фахівці",n:"Техніки / лаборанти",e:120,s:14000,r:4.0},
+  {c:"Офісні службовці",n:"Бухгалтери-касири",e:200,s:14000,r:8.0},
+  {c:"Офісні службовці",n:"Секретарі / діловоди",e:120,s:12000,r:7.5},
+  {c:"Офісні службовці",n:"Оператори call-центрів",e:90,s:15000,r:8.5},
+  {c:"Торгівля та послуги",n:"Продавці-консультанти",e:700,s:13000,r:5.0},
+  {c:"Торгівля та послуги",n:"Кухарі",e:180,s:12000,r:2.0},
+  {c:"Торгівля та послуги",n:"Охоронники",e:280,s:14000,r:2.0},
+  {c:"Торгівля та послуги",n:"Перукарі / косметологи",e:100,s:15000,r:1.5},
+  {c:"Торгівля та послуги",n:"Офіціанти / бармени",e:150,s:11000,r:2.0},
+  {c:"Сільське господарство",n:"Фермери",e:200,s:15000,r:3.0},
+  {c:"Сільське господарство",n:"Рільники / сільгосп. робітники",e:700,s:9000,r:1.5},
+  {c:"Сільське господарство",n:"Тваринники",e:200,s:10000,r:1.5},
+  {c:"Кваліфіковані робітники",n:"Муляри / будівельники",e:380,s:20000,r:1.5},
+  {c:"Кваліфіковані робітники",n:"Електрики",e:220,s:22000,r:2.0},
+  {c:"Кваліфіковані робітники",n:"Зварювальники",e:140,s:22000,r:2.5},
+  {c:"Кваліфіковані робітники",n:"Слюсарі / монтажники",e:200,s:20000,r:2.0},
+  {c:"Кваліфіковані робітники",n:"Покрівельники",e:60,s:18000,r:1.0},
+  {c:"Кваліфіковані робітники",n:"Столяри / теслі",e:80,s:17000,r:1.5},
+  {c:"Кваліфіковані робітники",n:"Швачки / кравці",e:180,s:12000,r:3.0},
+  {c:"Оператори та водії",n:"Водії вантажівок / автобусів",e:480,s:20000,r:3.5},
+  {c:"Оператори та водії",n:"Водії легкових / таксисти",e:200,s:18000,r:4.0},
+  {c:"Оператори та водії",n:"Оператори пром. обладнання",e:350,s:16000,r:3.0},
+  {c:"Оператори та водії",n:"Трактористи",e:150,s:16000,r:3.5},
+  {c:"Допоміжний персонал",n:"Прибиральники",e:450,s:9000,r:1.0},
+  {c:"Допоміжний персонал",n:"Вантажники / складські",e:250,s:12000,r:2.0},
+  {c:"Допоміжний персонал",n:"Кур'єри",e:100,s:13000,r:3.5},
+  {c:"Допоміжний персонал",n:"Доглядальники",e:150,s:10000,r:1.5},
+  {c:"Страхування та фінанси",n:"Актуарії",e:3,s:60000,r:9.0},
+  {c:"Страхування та фінанси",n:"Андеррайтери страхові",e:4,s:35000,r:8.5},
+  {c:"Страхування та фінанси",n:"Страхові агенти / брокери",e:15,s:22000,r:5.5},
+  {c:"Страхування та фінанси",n:"Спеціалісти зі збитків",e:6,s:25000,r:6.5},
+  {c:"Страхування та фінанси",n:"Ризик-менеджери",e:3,s:45000,r:8.0},
+  {c:"Страхування та фінанси",n:"Менеджери страх. продуктів",e:3,s:35000,r:7.5}
+];
+
+function scoreColor(r){
+  const stops=[[0,61,168,109],[4,212,145,58],[7,210,80,80],[10,160,40,40]];
+  let lo=stops[0],hi=stops[stops.length-1];
+  for(let i=0;i<stops.length-1;i++){if(r>=stops[i][0]&&r<=stops[i+1][0]){lo=stops[i];hi=stops[i+1];break;}}
+  const t=(r-lo[0])/(hi[0]-lo[0])||0;
+  return `rgb(${Math.round(lo[1]+t*(hi[1]-lo[1]))},${Math.round(lo[2]+t*(hi[2]-lo[2]))},${Math.round(lo[3]+t*(hi[3]-lo[3]))})`;
+}
+function textColor(r){return r<4?'#d4edda':r<7?'#fde8c0':'#fde0e0';}
+function label(r){return r<=3?'Безпечно':r<=5?'Помірно':r<=7?'Ризик':'Висока загроза';}
+
+let minR=0;
+
+function stats(fd){
+  const tot=fd.reduce((a,d)=>a+d.e,0);
+  const avg=fd.reduce((a,d)=>a+d.r*d.e,0)/tot;
+  const red=fd.filter(d=>d.r>=7).reduce((a,d)=>a+d.e,0);
+  const grn=fd.filter(d=>d.r<=3).reduce((a,d)=>a+d.e,0);
+  document.getElementById('s1').textContent=(tot/1000).toFixed(1)+' млн';
+  document.getElementById('s2').textContent=avg.toFixed(1)+' / 10';
+  document.getElementById('s3').textContent=Math.round(red).toLocaleString('uk-UA')+' тис.';
+  document.getElementById('s4').textContent=Math.round(grn).toLocaleString('uk-UA')+' тис.';
+}
+
+function render(){
+  const fd=D.filter(d=>d.r>=minR);
+  stats(fd);
+  const wrap=document.getElementById('tw');
+  const W=Math.max(wrap.clientWidth||700,360);
+  const H=Math.max(Math.round(W*0.68),380);
+  const svg=d3.select('#tm').attr('width',W).attr('height',H).attr('viewBox',`0 0 ${W} ${H}`).style('height',H+'px');
+  svg.selectAll('*').remove();
+
+  const root=d3.hierarchy({
+    name:'root',
+    children:[...new Set(fd.map(d=>d.c))].map(cc=>({
+      name:cc,children:fd.filter(d=>d.c===cc)
+    }))
+  }).sum(d=>d.e ? (d.c==="Страхування та фінанси" ? d.e*10 : d.e) : 0).sort((a,b)=>b.value-a.value);
+
+  d3.treemap().size([W,H]).paddingOuter(6).paddingTop(22).paddingInner(2)(root);
+
+  const tip=document.getElementById('tip');
+
+  // Category labels
+  svg.selectAll('.cg').data(root.children).join('g').attr('class','cg')
+    .each(function(d){
+      const g=d3.select(this);
+      const w=d.x1-d.x0;
+      g.append('rect').attr('x',d.x0).attr('y',d.y0).attr('width',w).attr('height',d.y1-d.y0)
+        .attr('fill','none').attr('stroke','#2a2d35').attr('stroke-width',1).attr('rx',4);
+      if(w>60){
+        g.append('text').attr('x',d.x0+7).attr('y',d.y0+15)
+          .attr('fill','#5a5f6e').attr('font-size','10').attr('font-family',"'IBM Plex Mono',monospace")
+          .attr('letter-spacing','0.06em').text(d.data.name.toUpperCase());
+      }
+    });
+
+  // Leaves
+  const lv=svg.selectAll('.lv').data(root.leaves()).join('g').attr('class','lv').style('cursor','pointer');
+  lv.append('rect').attr('x',d=>d.x0+1).attr('y',d=>d.y0+1)
+    .attr('width',d=>Math.max(0,d.x1-d.x0-2)).attr('height',d=>Math.max(0,d.y1-d.y0-2))
+    .attr('fill',d=>scoreColor(d.data.r)).attr('rx',3).attr('opacity',0.88);
+
+  lv.each(function(d){
+    const w=d.x1-d.x0-6,h=d.y1-d.y0-6;
+    if(w<22||h<14)return;
+    const g=d3.select(this);
+    const col=textColor(d.data.r);
+    const fs=w>100?11:w>55?9.5:8.5;
+    const parts=d.data.n.split(' / ');
+    const mx=d.x0+w/2+3,cy=d.y0+h/2+3;
+    const lbl=parts[0].length>18?parts[0].slice(0,17)+'…':parts[0];
+    if(h>=26&&w>=28){
+      g.append('text').attr('x',mx).attr('y',h>=40?cy-5:cy)
+        .attr('text-anchor','middle').attr('dominant-baseline','middle')
+        .attr('fill',col).attr('font-size',fs).attr('font-family',"'IBM Plex Sans',sans-serif")
+        .attr('font-weight','500').text(lbl);
+    }
+    if(h>=42&&w>=50&&parts[1]){
+      g.append('text').attr('x',mx).attr('y',cy+9)
+        .attr('text-anchor','middle').attr('dominant-baseline','middle')
+        .attr('fill',col).attr('font-size',fs-1).attr('font-family',"'IBM Plex Sans',sans-serif")
+        .attr('opacity',0.75).text(parts[1].length>16?parts[1].slice(0,15)+'…':parts[1]);
+    }
+  });
+
+  // Insurance cards
+  const INS=D.filter(d=>d.c==="Страхування та фінанси");
+  const grid=document.getElementById('ins-cards');
+  const insAvg=document.getElementById('ins-avg');
+  if(grid){
+    const visible=INS.filter(d=>d.r>=minR);
+    if(insAvg&&visible.length){
+      const avg=visible.reduce((a,d)=>a+d.r,0)/visible.length;
+      insAvg.textContent=avg.toFixed(1)+'/10';
+      insAvg.style.color=scoreColor(avg);
+    }
+    // opportunity labels per score band
+    const opp=(r)=>r>=8.5?'AI замінить роботу — але не людину з AI':r>=7?'Висока AI-leverage позиція':'Стабільна з AI-підтримкою';
+    const icon=(r)=>r>=8.5?'◆':r>=7?'▲':'●';
+    grid.innerHTML='';
+    visible.sort((a,b)=>b.r-a.r).forEach((d,idx)=>{
+      const col=scoreColor(d.r);
+      const card=document.createElement('div');
+      card.style.cssText=`background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;transition:all .18s;position:relative;`;
+      const guide=AI_GUIDE[d.n]||[];
+      const guideHtml=guide.map((s,i)=>`
+<div class="guide-step" style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">
+  <div style="min-width:20px;height:20px;border-radius:50%;background:${col}22;color:${col};font-size:10px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">${i+1}</div>
+  <div>
+    <div style="font-size:11px;font-weight:500;color:var(--text);margin-bottom:2px;">${s.t}</div>
+    <div style="font-size:11px;color:var(--muted);line-height:1.6;">${s.d}</div>
+  </div>
+</div>`).join('');
+      const cardId='card-ins-'+idx;
+      card.innerHTML=`
+<div style="position:absolute;top:0;left:0;width:3px;height:100%;background:${col};border-radius:8px 0 0 8px;"></div>
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+  <span style="font-size:11px;color:${col};font-family:'IBM Plex Mono',monospace;font-weight:500;">${icon(d.r)} ${d.r}/10</span>
+  <span style="font-size:10px;background:${col}22;color:${col};padding:2px 7px;border-radius:20px;font-family:'IBM Plex Mono',monospace;">${label(d.r)}</span>
+</div>
+<div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px;line-height:1.35;">${d.n}</div>
+<div style="font-size:11px;color:#5b7cf6;line-height:1.5;margin-bottom:8px;">${opp(d.r)}</div>
+<div style="display:flex;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid var(--border);">
+  <span style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;">~${d.e} тис. осіб</span>
+  <span style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;">${d.s.toLocaleString('uk-UA')} грн</span>
+</div>
+<div style="margin-top:10px;">
+  <button id="btn-${cardId}" style="background:none;border:none;padding:0;cursor:pointer;display:flex;align-items:center;gap:6px;width:100%;">
+    <span style="font-size:10px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;color:${col};font-weight:500;">▶ Як впровадити AI</span>
+    <span id="arr-${cardId}" style="font-size:10px;color:${col};transition:transform .2s;">↓</span>
+  </button>
+  <div id="guide-${cardId}" style="display:none;margin-top:6px;">${guideHtml}
+    <div style="padding-top:10px;">
+      <button onclick="event.stopPropagation();doClick(${JSON.stringify(d).replace(/"/g,'&quot;')})" style="background:${col}18;border:1px solid ${col}44;border-radius:6px;padding:5px 12px;font-size:11px;color:${col};cursor:pointer;font-family:'IBM Plex Mono',monospace;">AI-аналіз професії →</button>
+    </div>
+  </div>
+</div>`;
+      card.style.cursor='default';
+      card.addEventListener('mouseenter',()=>{card.style.borderColor=col;});
+      card.addEventListener('mouseleave',()=>{card.style.borderColor='var(--border)';});
+      const btn=card.querySelector('#btn-'+cardId);
+      const guideDiv=card.querySelector('#guide-'+cardId);
+      const arr=card.querySelector('#arr-'+cardId);
+      btn.addEventListener('click',(e)=>{
+        e.stopPropagation();
+        const open=guideDiv.style.display==='none';
+        guideDiv.style.display=open?'block':'none';
+        arr.style.transform=open?'rotate(180deg)':'';
+        arr.textContent=open?'↑':'↓';
+        btn.querySelector('span').textContent=(open?'▼':'▶')+' Як впровадити AI';
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  lv.on('mousemove',function(ev,d){
+    const rect=wrap.getBoundingClientRect();
+    const mx=ev.clientX-rect.left;
+    const my=ev.clientY-rect.top;
+    const tx=mx+16+230>W?mx-240:mx+16;
+    const ty=Math.max(10,my-80);
+    tip.style.display='block';
+    tip.style.left=tx+'px';
+    tip.style.top=ty+'px';
+    document.getElementById('ti-n').textContent=d.data.n;
+    document.getElementById('ti-c').textContent=d.data.c;
+    document.getElementById('ti-s').style.color=scoreColor(d.data.r);
+    document.getElementById('ti-s').textContent=`AI-ризик: ${d.data.r}/10 — ${label(d.data.r)}`;
+    document.getElementById('ti-r').innerHTML=`Зайнятість: ~${d.data.e.toLocaleString('uk-UA')} тис. осіб<br>Зарплата: ~${d.data.s.toLocaleString('uk-UA')} грн/міс`;
+  })
+  .on('mouseleave',()=>{tip.style.display='none';})
+  .on('click',(ev,d)=>{tip.style.display='none';doClick(d.data);});
+}
+
+const ANALYSIS = {
+  "Директори підприємств": `Управлінська робота частково цифрова: стратегічні рішення, презентації, фінансовий контроль — все це AI вже вміє підтримувати. Але директор залишається точкою відповідальності, носієм репутації та людиною, якій довіряє команда. AI стає інструментом аналізу, а не замінником лідерства. В Україні в умовах воєнного стану роль керівника ускладнилась: безпека персоналу, релокація, взаємодія з державою — це не автоматизується.`,
+  "Держ. службовці (керівники)": `Керівники держслужби працюють з документами, регуляторними актами та координацією — все це цифрове й потенційно AI-assisted. Проте прийняття рішень у публічному секторі несе юридичну та політичну відповідальність, яку неможливо делегувати алгоритму. В Україні держслужба активно цифровізується через Дію та e-gov платформи, що підвищує продуктивність, але не скорочує потребу в керівниках — навпаки, потрібні люди здатні працювати з новими системами.`,
+  "Менеджери проєктів": `Управління проєктами — класично цифрова робота: планування, трекінг, комунікація, ризики — все в системах типу Jira, Asana, MS Project. AI вже автоматизує складання планів, передбачення затримок і генерацію звітів. Ризик 7/10 відображає реальну загрозу для менеджерів середньої ланки. В Україні попит на PM-спеціалістів у будівництві та IT-відбудові зростає — але з вимогою AI-грамотності.`,
+  "Програмісти / ІТ-розробники": `Розробка програмного забезпечення — найбільш очевидний кандидат на AI-вплив: код пишеться в текстовому форматі, задачі формалізовані, результат перевіряється автоматично. GitHub Copilot, Cursor та аналоги вже замінюють 30–50% рутинного кодингу. Ризик 8.5 означає не зникнення, а трансформацію: цінними залишаться архітектори систем і ті, хто керує AI-агентами. В Україні ІТ-галузь — головний валютний донор, але конкуренція за позиції зросте вдвічі.`,
+  "Аналітики даних": `Аналітика даних — майже повністю цифровий продукт: SQL-запити, дашборди, статистичні моделі, презентації інсайтів. AI вже генерує код для аналізу, будує візуалізації та формулює висновки. Оцінка 9/10 — одна з найвищих у вибірці, бо захисних бар'єрів майже немає. Стратегія виживання: перейти від «аналітика даних» до «аналітика рішень» — людини, яка ставить правильні питання, а не тільки обробляє дані.`,
+  "Лікарі": `Медицина захищена фізичним оглядом, тактильною діагностикою та юридичною відповідальністю за рішення. AI чудово справляється з аналізом знімків, ЕКГ та патернів симптомів — але як інструмент підтримки, не заміни. Оцінка 5/10 відображає цей баланс. В Україні лікарі додатково захищені дефіцитом кадрів через мобілізацію та міграцію — попит критично перевищує пропозицію і в мирний час, і тим більше зараз.`,
+  "Вчителі": `Викладання поєднує цифровий контент (пояснення, перевірку знань) з живою взаємодією, мотивацією та управлінням класом. AI генерує уроки, тести та адаптивні програми — але не замінює наставника. Оцінка 6/10: є суттєвий вплив, але не катастрофічний. В Україні дистанційне навчання через воєнний стан прискорило AI-інтеграцію в освіту, але одночасно підкреслило цінність живого вчителя для соціалізації дітей.`,
+  "Вихователі дитсадків": `Робота з дошкільнятами — майже повністю фізична: нагляд, безпека, емоційний розвиток, гра. AI не може присутньо заспокоїти дитину, помітити травму чи встановити довіру через обійми. Оцінка 3.5/10 — низький ризик. В Україні кількість дошкільних закладів скоротилась через евакуацію і руйнування, що парадоксально збільшує дефіцит вихователів у відносно безпечних регіонах.`,
+  "Юристи / правники": `Юридична робота дуже цифрова: аналіз документів, складання контрактів, дослідження судової практики. AI вже ефективніше за людину шукає прецеденти та перевіряє договори. Оцінка 7/10 відображає суттєвий ризик для юристів загальної практики. Захист — у спеціалізації та живих переговорах. В Україні правнича робота ускладнена воєнним законодавством, санкціями та потребами відбудови — попит на вузьких спеціалістів зростає.`,
+  "Бухгалтери": `Бухгалтерія — класичний приклад структурованої цифрової роботи: введення даних, звітність, податкові декларації. AI і автоматизація вже суттєво скоротили кількість рутинних операцій. Оцінка 8/10 — під серйозним тиском. Стратегія: перехід до фінансового консультування, де потрібне судження, а не лише обрахунок. В Україні бухгалтерська сфера ускладнена змінами в законодавстві через воєнний стан, що тимчасово підтримує попит на знавців нюансів.`,
+  "Фінансові аналітики": `Фінансовий аналіз — повністю цифровий продукт: моделі оцінки, прогнози, інвестиційні меморандуми. AI вже перевершує людину в обробці великих масивів фінансових даних і побудові сценаріїв. Оцінка 8.5/10 — один з найвищих ризиків серед фахівців. Цінність залишається в інтерпретації, комунікації з клієнтом та прийнятті рішень в умовах невизначеності. В Україні відновлення економіки після війни створить попит на аналітиків з досвідом роботи в кризових умовах.`,
+  "Інженери-будівельники": `Будівельна інженерія поєднує цифрове проєктування (BIM, CAD, розрахунки) з фізичними інспекціями та управлінням будівництвом. AI автоматизує проєктування типових конструкцій, але не замінює інженера на майданчику. Оцінка 5.5/10. В Україні відбудова зруйнованої інфраструктури — Маріуполь, Херсонщина, енергосистема — створює колосальний попит на будівельних інженерів на десятиліття вперед.`,
+  "Інженери-механіки": `Механічна інженерія включає як цифрове проєктування (CAD/CAM, симуляції), так і фізичну роботу з прототипами та обладнанням. AI-інструменти для генеративного дизайну вже є, але виробничий досвід і розуміння матеріалів поки залишаються за людиною. Оцінка 5.5/10. В Україні оборонна промисловість та відновлення виробничих потужностей формують стабільний попит на механічних інженерів.`,
+  "Журналісти / редактори": `Журналістика дуже вразлива: написання текстів, редагування, верстка — все це AI робить швидко і дешево. Генерація новинних зведень, рерайтинг прес-релізів — вже автоматизовані. Оцінка 8/10. Захист — у розслідувальній журналістиці, ексклюзивних джерелах та живому репортажі. В Україні воєнна журналістика набула глобального значення — фронтові репортери з унікальним доступом залишаються незамінними.`,
+  "Перекладачі": `Машинний переклад досяг рівня, що перевершує середнього людського перекладача для стандартних текстів. DeepL та GPT-4 перекладають швидше і дешевше. Оцінка 9/10 — найвища поряд з актуаріями. Ніша залишається у синхронному перекладі, юридичних документах та культурно-специфічних текстах. В Україні попит на перекладачів з/на українську зріс через міжнародну увагу до країни, але саме в тих нішах де машина поки слабша.`,
+  "Маркетологи": `Маркетинг — суміш аналітики (цифрова, AI-вразлива) та творчості зі стратегією (менш вразлива). AI генерує рекламні тексти, проводить A/B-тести, оптимізує таргетинг. Оцінка 7.5/10. Цінність залишається в бренд-стратегії, розумінні культурного контексту та управлінні складними кампаніями. В Україні маркетинг трансформувався — war-time комунікація, міжнародний PR та відбудова бренду країни створюють нові специфічні компетенції.`,
+  "Архітектори": `Архітектура поєднує цифрове проєктування з творчим задумом та фізичною реалізацією. AI-інструменти генерують варіанти планувань і фасадів, але архітектурний задум, робота з замовником та авторський нагляд залишаються людськими. Оцінка 7/10. В Україні відбудова зруйнованих міст — унікальна можливість для архітекторів: попит на проєктування нового житла, публічних просторів та меморіалів буде величезним.`,
+  "Психологи": `Психологія захищена фундаментально людською природою терапевтичного процесу — довіра, емпатія, присутність, спостереження невербальних сигналів. AI-чат-боти можуть надавати першу підтримку, але не замінять терапевтичні стосунки. Оцінка 5/10. В Україні попит на психологів катастрофічно перевищує пропозицію: ПТСР серед військових та цивільних, втрати, вимушене переселення — потреба у фахівцях критична на роки вперед.`,
+  "Соціальні працівники": `Соціальна робота — це фізична присутність, польова робота, кризове втручання та побудова довіри з вразливими групами. Цифровий компонент мінімальний. Оцінка 3.5/10 — добре захищена від AI. В Україні соціальні працівники перебувають під колосальним тиском: вимушені переселенці, сім'ї загиблих, люди з інвалідністю внаслідок поранень — кількість клієнтів збільшилась у рази при скороченні ресурсів.`,
+  "Агрономи": `Агрономія поєднує цифровий аналіз (дані з дронів, прогнози врожайності, планування сівозміни) з польовою роботою та локальним знанням ґрунтів. AI-агрономія розвивається, але замінити практичний досвід роботи з конкретним полем поки не може. Оцінка 5/10. В Україні АПК — стратегічна галузь, попри те що частина сільськогосподарських угідь окупована чи замінована: попит на агрономів з AI-компетенціями буде зростати.`,
+  "Медсестри / акушерки": `Медсестринство — переважно фізична робота: маніпуляції, догляд, спостереження за пацієнтом, екстрені втручання. AI може підтримувати моніторинг і документацію, але не замінює присутню людську турботу. Оцінка 3/10 — один з найнижчих ризиків. В Україні дефіцит медичного персоналу критичний: мобілізація, міграція за кордон та навантаження воєнного часу роблять медсестер однією з найбільш потрібних спеціальностей.`,
+  "ІТ-техніки / сисадміни": `Системне адміністрування частково автоматизується: моніторинг, деплой, типові налаштування. Але фізичне обслуговування обладнання, усунення нестандартних збоїв та управління безпекою інфраструктури залишаються за людиною. Оцінка 6/10 — помірний ризик. В Україні кібербезпека стала питанням національної безпеки: кількість атак з боку Росії зросла на порядок, попит на спеціалістів із захисту інфраструктури критично високий.`,
+  "Агенти з нерухомості": `Ринок нерухомості частково цифровий: пошук, порівняння, документація — AI автоматизує. Але фізичний показ об'єктів, переговори та побудова довіри між покупцем і продавцем залишаються людськими. Оцінка 6.5/10. В Україні ринок нерухомості зазнав глибокої трансформації: евакуація, руйнування, переміщення — попит зосереджений у відносно безпечних регіонах, де агенти з локальним знанням ринку незамінні.`,
+  "Техніки / лаборанти": `Лабораторна робота включає фізичні маніпуляції з зразками та обладнанням — це погано автоматизується. Обробка результатів і документація — цифрові й AI-vulnurable. Оцінка 4/10 — помірно захищена. В Україні лабораторна база зосереджена в університетах та медичних установах; воєнні умови посилили попит на швидку лабораторну діагностику.`,
+  "Бухгалтери-касири": `Касові операції та первинна бухгалтерія — найбільш рутинна цифрова робота, яка автоматизується найшвидше. Банківські автомати, онлайн-платежі та автоматичний облік вже витіснили значну частину цих позицій. Оцінка 8/10. В Україні система Дія та цифрові платежі прискорили автоматизацію — але значна частина населення все ще користується готівкою, що підтримує попит у короткостроковій перспективі.`,
+  "Секретарі / діловоди": `Секретарська робота — текстова, адміністративна, розкладова — все це AI вже виконує краще за людину. Планування зустрічей, підготовка документів, відповіді на листи — класична зона автоматизації. Оцінка 7.5/10. Залишається цінність у фізичній присутності в офісі, управлінні гостями та вирішенні нестандартних ситуацій. В Україні частина секретарських функцій вже поглинута корпоративними чат-ботами та CRM-системами.`,
+  "Оператори call-центрів": `Call-центри — найбільш активно автоматизований сектор: голосові боти, IVR та AI-чат вже обробляють 60–80% стандартних запитів у провідних компаніях. Оцінка 8.5/10 — дуже високий ризик для рутинних позицій. В Україні страхові компанії, банки та телеком активно впроваджують AI-асистентів — це пряма конкуренція для операторів. Залишається ніша у складних емоційних випадках та B2B-підтримці.`,
+  "Продавці-консультанти": `Продаж у роздрібній торгівлі поєднує фізичну присутність із консультуванням. AI-рекомендаційні системи частково замінюють консультантів в онлайн-каналах, але в офлайні живе спілкування та демонстрація товару залишаються цінними. Оцінка 5/10. В Україні ринок рітейлу змінився: частина великих мереж закрилась або переїхала, але попит на якісний сервіс у фізичних точках зберігається.`,
+  "Кухарі": `Приготування їжі — фізична, творча, сенсорна робота, яку роботи поки не вміють відтворювати в повній мірі. Автоматизація є лише у великих харчових виробництвах. Оцінка 2/10 — добре захищена. В Україні HoReCa-сектор постраждав від воєнного стану, але відроджується: кухарі зі специфічними навичками та авторською кухнею — в стабільному попиті.`,
+  "Охоронники": `Охоронна діяльність — фізична присутність, стримуючий ефект, реагування на інциденти. Камери та системи безпеки доповнюють, але не замінюють живого охоронця. Оцінка 2/10. В Україні після 2022 року попит на послуги безпеки різко зріс: охорона об'єктів критичної інфраструктури, ТРЦ, житлових комплексів — сектор розширився попри загальні економічні труднощі.`,
+  "Перукарі / косметологи": `Краса та догляд — тілесна, персональна послуга, де контакт, довіра та естетичне судження критичні. Жоден AI не замінить майстра, який відчуває волосся і розуміє побажання клієнта. Оцінка 1.5/10 — один з найнижчих ризиків. В Україні beauty-сектор виявився надзвичайно стійким навіть у воєнний час: студії та салони відновлювались одними з перших як спосіб нормалізації повсякденного життя.`,
+  "Офіціанти / бармени": `Ресторанний сервіс — живе спілкування, атмосфера, невербальна комунікація, реакція на настрій гостя. Роботи-офіціанти існують як атракціон, але не як масове рішення. Оцінка 2/10. В Україні HoReCa відновлюється там де є безпека: Львів, Івано-Франківськ, Ужгород — ці міста мають надмір попиту на персонал у сфері гостинності.`,
+  "Фермери": `Фермерство все більше цифрове: точне землеробство, дрони, сенсори ґрунту, AI-прогнози. Але рішення про посів, управління ризиками та фізичний контроль полів залишаються за фермером. Оцінка 3/10. В Україні АПК під подвійним тиском: окупація частини земель та мінна небезпека обмежують виробництво, але одночасно роблять досвідченого фермера ще ціннішим.`,
+  "Рільники / сільгосп. робітники": `Польова сільськогосподарська праця — фізична, сезонна, виконується в умінах що важко автоматизувати без дорогої техніки. Оцінка 1.5/10 — мінімальний ризик від AI. В Україні сільгосп. робітники стикаються з іншими ризиками: мінна небезпека на полях, окупація територій та нестача техніки через воєнні дії — але попит на ручну працю в АПК залишається високим.`,
+  "Тваринники": `Тваринництво — фізична праця з живими істотами: годування, догляд, ветеринарний нагляд, пологи. Автоматизація є на великих фермах, але не замінює людину повністю. Оцінка 1.5/10. В Україні тваринництво постраждало від воєнних дій на сході та півдні, але залишається стратегічно важливою галуззю у центральних і західних регіонах.`,
+  "Муляри / будівельники": `Будівельні роботи — фізичні, просторово складні, що вимагають адаптації до умов конкретного об'єкту. Будівельна автоматизація існує лише для типових операцій у контрольованих умовах. Оцінка 1.5/10. В Україні попит на будівельників колосальний: відновлення зруйнованого житла, інфраструктури та промислових об'єктів — на десятиліття вперед мільйони квадратних метрів для відбудови.`,
+  "Електрики": `Електромонтажні роботи — фізичні, вимагають роботи з реальним обладнанням у непередбачуваних умовах. AI може допомагати з діагностикою та проєктуванням схем, але не замінить руки електрика. Оцінка 2/10. В Україні енергетична інфраструктура систематично знищується ракетними ударами — попит на електриків для відновлення підстанцій, ліній передач та будівель надзвичайно високий.`,
+  "Зварювальники": `Зварювання — висококваліфікована фізична праця, де якість визначається досвідом та чуттям матеріалу. Промислова зварювальна автоматизація є, але для будівництва та ремонту ручне зварювання незамінне. Оцінка 2.5/10. В Україні потреба у зварювальниках зросла: відновлення мостів, трубопроводів, промислових конструкцій та оборонне виробництво — стабільний попит.`,
+  "Слюсарі / монтажники": `Слюсарна та монтажна робота — фізична, вимагає просторового мислення та роботи з реальними механізмами. AI-інструменти підтримують діагностику, але не замінюють руки майстра. Оцінка 2/10. В Україні відновлення промислового обладнання, монтаж генераторів та систем автономного енергопостачання — сфери з різко зростаючим попитом на слюсарів.`,
+  "Покрівельники": `Покрівельні роботи — фізично складні, виконуються у важких умовах, вимагають досвіду з різними матеріалами та конструкціями. Оцінка 1/10 — мінімальний ризик. В Україні відновлення пошкоджених та зруйнованих будівель включає величезний обсяг покрівельних робіт — від приватних будинків до промислових об'єктів. Дефіцит кваліфікованих покрівельників вже відчутний у прифронтових регіонах.`,
+  "Столяри / теслі": `Столярна майстерність — ремесло, що поєднує фізичну роботу з творчим підходом і знанням матеріалів. ЧПУ-верстати автоматизують серійне виробництво, але ручна теслярська і столярна робота залишається унікальною. Оцінка 1.5/10. В Україні відновлення дерев'яних конструкцій, вікон, дверей та меблів у пошкодженому житлі формує стабільний попит на майстрів.`,
+  "Швачки / кравці": `Швейна справа — тонка моторика, робота з матеріалом, підгонка по фігурі. Масове виробництво автоматизується, але ательє та індивідуальний пошив залишаються ремеслом. Оцінка 3/10. В Україні швейна галузь отримала нові стимули: виробництво військового одягу, бронежилетів та уніформи — стрімко зросло з 2022 року, створивши новий сегмент попиту.`,
+  "Водії вантажівок / автобусів": `Водіння комерційного транспорту частково цифрове: маршрути, логістика, документація — AI-assisted. Автономне водіння розвивається, але масове впровадження в Україні — справа далекого майбутнього. Оцінка 3.5/10. В Україні водії вантажівок критично важливі для військової та цивільної логістики: підвезення гуманітарної допомоги, постачання до прифронтових районів — попит стабільний.`,
+  "Водії легкових / таксисти": `Таксі та Uber-подібні сервіси вже значно автоматизували диспетчеризацію, але автономні автомобілі в Україні не з'являться найближчим часом. Оцінка 4/10 — помірний ризик. В Україні еміграція частини водіїв та попит на перевезення у великих містах підтримують зайнятість у секторі; особливо зріс попит на евакуаційні та медичні перевезення.`,
+  "Оператори пром. обладнання": `Операторська робота на виробництві — фізична присутність, контроль процесів, реакція на відхилення. Автоматизація виробництва є, але вимагає операторів для нагляду та обслуговування. Оцінка 3/10. В Україні оборонна промисловість активно нарощує виробництво боєприпасів, дронів та бронетехніки — попит на операторів виробничих ліній різко зріс.`,
+  "Трактористи": `Керування сільськогосподарською технікою стає все більш автоматизованим (GPS-автопілот, точне землеробство), але механік-тракторист залишається потрібним для нестандартних ситуацій. Оцінка 3.5/10. В Україні трактористи та механізатори — ключова ланка АПК; дефіцит кадрів через мобілізацію та загибель на фронті ставить питання залучення жінок та молоді до цього сектору.`,
+  "Прибиральники": `Прибирання — фізична робота в змінному просторовому середовищі, яка надзвичайно погано піддається роботизації поза контрольованими умовами. Оцінка 1/10 — мінімальний AI-ризик. В Україні прибиральники та обслуговуючий персонал залишаються незамінними у лікарнях, школах, офісах та на виробництвах — попит стабільний, а дефіцит персоналу відчутний через міграцію.`,
+  "Вантажники / складські": `Складська і вантажна робота частково автоматизується у великих логістичних центрах, але в Україні рівень такої автоматизації низький. Ручна праця залишається основою. Оцінка 2/10. В Україні логістика гуманітарної допомоги, військового постачання та відновлення торгових мереж формує стабільний попит на складський персонал.`,
+  "Кур'єри": `Кур'єрська доставка — фізична робота з навігацією у міському середовищі. Автономні дрони-доставщики є технологічно можливими, але масове впровадження в українських містах — не найближча перспектива. Оцінка 3.5/10. В Україні e-commerce зріс через воєнний час: люди менше виходять, більше замовляють — попит на кур'єрів стабільно зростає в безпечних регіонах.`,
+  "Доглядальники": `Догляд за людьми похилого віку та людьми з особливими потребами — глибоко людська робота: фізичний догляд, емоційна підтримка, супровід. AI не може забезпечити присутність і тепло. Оцінка 1.5/10. В Україні потреба у доглядальниках зростає: літні люди, евакуйовані з прифронтових зон, ветерани з пораненнями — попит критично вищий за пропозицію.`,
+  "Актуарії": `Актуарна наука — найбільш цифровий продукт у страхуванні: статистичні моделі смертності, таблиці ризиків, ціноутворення продуктів — все це алгоритмізується. AI вже будує актуарні моделі швидше і точніше за людину. Оцінка 9/10 — це не вирок, а можливість: актуарій з AI-інструментами замінить п'ятьох традиційних. В Україні таких спеціалістів лише ~3–4 тис. — знання AI автоматично дає конкурентну перевагу.`,
+  "Андеррайтери страхові": `Страховий андеррайтинг — аналіз ризиків по структурованих анкетах і даних. AI вже домінує в масових продуктах: автострахування, стандартне майнове страхування. Оцінка 8.5/10. Ніша для людини — складні, унікальні ризики: промислові об'єкти, нестандартні випадки, де потрібне судження. В Україні воєнні ризики, страхування відбудови та нові продукти для ветеранів — сегменти, де досвід андеррайтера критичний.`,
+  "Страхові агенти / брокери": `Агентська робота поєднує цифровий підбір продуктів (AI-assisted) з живою роботою з клієнтом: довіра, пояснення умов, врегулювання конфліктів. Оцінка 5.5/10 — помірний ризик. Масовий стандартний продукт агрегатори продаватимуть без агента, але складні корпоративні рішення та лояльний клієнтський портфель — залишаться за людиною. В Україні страховий ринок відновлюється: ОСЦПВ, страхування майна, нові обов'язкові продукти дають роботу.`,
+  "Спеціалісти зі збитків": `Врегулювання страхових збитків — частково цифрова (документи, розрахунки), частково фізична (виїзд на місце, огляд, переговори). AI автоматизує стандартні випадки, але складні збитки, судові спори та клієнтські переговори залишаються за людиною. Оцінка 6.5/10. В Україні після ракетних ударів страхові компанії отримали безпрецедентний обсяг претензій — досвід урегулювання воєнних збитків став унікальною компетенцією.`,
+  "Ризик-менеджери": `Управління ризиками — аналітична, цифрова робота: стрес-тести, сценарний аналіз, регуляторна звітність. AI автоматизує моделювання і моніторинг. Оцінка 8/10 — під серйозним впливом. Але стратегічне судження, комунікація з регулятором та відповідальність за рішення залишаються людськими. В Україні НБУ та НКРЗФП посилили регуляторні вимоги — попит на ризик-менеджерів у банках та страхових компаніях зростає.`,
+  "Менеджери страх. продуктів": `Розробка страхових продуктів — аналітична, ціноутворення та маркетингова робота, переважно цифрова. AI підтримує аналіз даних і тестування гіпотез. Оцінка 7.5/10. Цінність залишається у розумінні поведінки клієнта, регуляторної специфіки та стратегічному позиціонуванні продукту. В Україні нові обов'язкові страхові продукти та потреби відбудови відкривають нішу для розробки принципово нових страхових рішень.`
+};
+
+const AI_GUIDE = {
+  "Актуарії": [{"t":`Моделювання`,"d":`ChatGPT / Claude для генерації Python/R коду актуарних моделей — замість написання з нуля`},{"t":`Таблиці смертності`,"d":`Завантажте дані ILO + ChatGPT Code Interpreter для автоматичного побудови life tables`},{"t":`Pricing`,"d":`GitHub Copilot прискорює написання моделей GLM/XGBoost для тарифікації у 3–5 разів`},{"t":`Звітність`,"d":`Claude генерує актуарні меморандуми та пояснення методології за структурованими даними`},{"t":`Навчання`,"d":`Курс «Actuarial Data Science» на Coursera + практика на відкритих даних НКРЗФП`}],
+  "Андеррайтери страхові": [{"t":`Аналіз анкет`,"d":`Claude / GPT-4 читає заповнені анкети і виділяє червоні прапорці ризику за 30 секунд`},{"t":`Порівняння об'єктів`,"d":`Завантажте фото об'єкта в GPT-4o — він дає попередню оцінку стану майна`},{"t":`Ринкові дані`,"d":`Perplexity AI для швидкого збору інформації про клієнта/галузь перед прийняттям рішення`},{"t":`Шаблони рішень`,"d":`Claude генерує структуровані андеррайтингові меморандуми з вашого опису кейсу`},{"t":`Прецеденти`,"d":`NotebookLM — завантажте власну базу кейсів, задавайте питання як до бази знань`},
+{"t":`Навчання`,"d":`Курс «AI for Insurance Underwriting» на Udemy + практика на відкритих даних МТСБУ та НКРЗФП`}],
+  "Страхові агенти / брокери": [{"t":`Підготовка до зустрічі`,"d":`Claude: «Клієнт — ФОП, будівельний бізнес, 3 об'єкти. Які питання задати і які продукти запропонувати?»`},{"t":`Комерційні пропозиції`,"d":`GPT-4 генерує персоналізовані КП за шаблоном за 2 хвилини замість 30`},{"t":`Заперечення клієнтів`,"d":`Відпрацюйте з Claude типові заперечення — «дорого», «сам розберусь», «потім»`},{"t":`Email-кампанії`,"d":`Claude пише серію листів для реактивації клієнтів під конкретний сегмент портфелю`},{"t":`CRM-нотатки`,"d":`Dictate.ai + Claude: продиктуйте підсумок зустрічі, отримайте структурований запис у CRM`},
+{"t":`Навчання`,"d":`Безкоштовний курс «ChatGPT for Sales» (HubSpot Academy) + щоденна практика: готуйте 3 КП на тиждень за допомогою AI`}],
+  "Спеціалісти зі збитків": [{"t":`Первинна обробка`,"d":`Claude аналізує документи збитку і формує попередній звіт за 5 хвилин`},{"t":`Фото-аналіз`,"d":`GPT-4o: завантажте фото пошкодження — отримайте попередній перелік робіт для відновлення`},{"t":`Розрахунок збитку`,"d":`Claude + Excel: опишіть пошкодження, отримайте кошторис з посиланнями на нормативи`},{"t":`Листування`,"d":`Claude генерує відповіді заявникам — технічні, юридичні, відмовні — за вашим брифом`},{"t":`Прецеденти`,"d":`NotebookLM завантажте судову практику ВССУ по страхових спорах — шукайте миттєво`},
+{"t":`Навчання`,"d":`Курс «AI Tools for Legal & Claims» на Coursera + практикуйте аналіз реальних справ через NotebookLM з власною базою кейсів`}],
+  "Ризик-менеджери": [{"t":`Стрес-тести`,"d":`Claude + Python: опишіть сценарій словами, отримайте код моделі стрес-тесту`},{"t":`Регуляторна звітність`,"d":`GPT-4 читає вимоги НБУ/НКРЗФП і генерує чеклист відповідності для вашої компанії`},{"t":`Ризик-реєстр`,"d":`Claude веде і оновлює ризик-реєстр: описуєте подію — він класифікує, оцінює, додає до матриці`},{"t":`ORSA / SFCR`,"d":`Claude генерує структуру звіту ORSA і заповнює типові розділи за вашими вхідними даними`},{"t":`Моніторинг новин`,"d":`Perplexity AI щодня: «Які регуляторні зміни в страхуванні України за тиждень?»`},
+{"t":`Навчання`,"d":`Курс «Risk Management with AI» (edX / MIT) + щотижневий дайджест регуляторних змін НБУ через Perplexity Pro`}],
+  "Менеджери страх. продуктів": [{"t":`Аналіз конкурентів`,"d":`Perplexity AI + Claude: завантажте публічні тарифи конкурентів, отримайте порівняльну таблицю`},{"t":`Customer journey`,"d":`Claude будує customer journey map продукту за описом цільової аудиторії та каналів продажу`},{"t":`Умови продукту`,"d":`GPT-4 читає чинні правила страхування і виділяє проблемні формулювання та прогалини`},{"t":`Pitch-deck`,"d":`Claude генерує структуру презентації нового продукту для правління з фінансовим обґрунтуванням`},{"t":`A/B тести`,"d":`Claude пише варіанти опису продукту для тестування — різні акценти, тони, цільові аудиторії`},
+{"t":`Навчання`,"d":`Курс «Product Analytics with AI» на DataCamp + читайте звіти Sigma Research та НКРЗФП через Claude як AI-асистента`}]
+};
+
+function doClick(occ){
+  const dp=document.getElementById('dp');
+  dp.style.display='block';
+  dp.scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('dn').textContent=occ.n;
+  const badge=document.getElementById('db');
+  badge.textContent=`${occ.r}/10 — ${label(occ.r)}`;
+  badge.style.background=scoreColor(occ.r)+'33';
+  badge.style.color=scoreColor(occ.r);
+  badge.style.border=`1px solid ${scoreColor(occ.r)}55`;
+  const dc=document.getElementById('dc');
+  const txt=ANALYSIS[occ.n]||'Детальний аналіз для цієї професії буде додано пізніше.';
+  dc.textContent=txt;
+}
+
+document.getElementById('flt').addEventListener('input',function(){
+  minR=+this.value;
+  document.getElementById('fv').textContent=this.value+'+';
+  render();
+});
+
+render();
+
+let resizeTimer;
+window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(render,120);});
+</script>
+</body>
+</html>
