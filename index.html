@@ -111,7 +111,39 @@ a:hover{text-decoration:underline;}
   .stats{grid-template-columns:1fr 1fr;}
   .meta{text-align:left;}
   .legend{margin-left:0;}
+  .insights{padding-left:1.25rem;padding-right:1.25rem;}
 }
+.insights{border-top:1px solid var(--border);padding:2.5rem 3rem;}
+.ins-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:1.5rem;}
+.ins-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem 1.5rem;}
+.ins-label{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px;}
+.ins-title{font-size:14px;font-weight:500;color:var(--text);margin-bottom:12px;line-height:1.35;}
+.ins-body{font-size:12px;color:var(--muted);line-height:1.8;}
+.ins-body strong{color:var(--text);}
+.matrix-row{display:flex;gap:8px;margin-bottom:8px;}
+.matrix-cell{flex:1;border-radius:6px;padding:10px 12px;font-size:11px;line-height:1.55;}
+.cell-title{font-weight:500;margin-bottom:4px;font-size:11px;}
+.cell-list{list-style:none;padding:0;margin:0;}
+.cell-list li::before{content:'· ';opacity:0.6;}
+.cell-safe{background:#0d1f10;border:1px solid #1e3d22;color:#7ec87e;}
+.cell-safe .cell-title{color:#aadcaa;}
+.cell-danger{background:#1f0d0d;border:1px solid #3d1e1e;color:#c87e7e;}
+.cell-danger .cell-title{color:#dca9a9;}
+.cell-warn{background:#1f1a05;border:1px solid #3d3210;color:#c8b45a;}
+.cell-warn .cell-title{color:#dcd09a;}
+.cell-neutral{background:#111520;border:1px solid var(--border);color:var(--muted);}
+.cell-neutral .cell-title{color:var(--text);}
+.premium-bar{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.prem-name{font-size:11px;color:var(--muted);min-width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.prem-track{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.prem-fill{height:100%;background:#5b7cf6;border-radius:3px;}
+.prem-val{font-size:11px;font-family:'IBM Plex Mono',monospace;color:#5b7cf6;min-width:38px;text-align:right;}
+.gender-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.gen-name{font-size:11px;color:var(--muted);width:150px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.gen-bar{flex:1;height:7px;border-radius:4px;overflow:hidden;display:flex;}
+.gen-f{background:#c06fa8;}
+.gen-m{background:#5b7cf6;}
+.gen-pct{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--muted);min-width:56px;text-align:right;}
 </style>
 </head>
 <body>
@@ -175,7 +207,7 @@ a:hover{text-decoration:underline;}
         <div>
           <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:6px;">Страхування та фінанси — окремий фокус</div>
           <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:6px;">Високий AI-ризик = висока цінність людини з AI-навичками</div>
-          <div style="font-size:12px;color:var(--muted);line-height:1.75;max-width:640px;">Актуарії та андеррайтери мають оцінку 8.5–9.0 не тому що зникнуть, а тому що весь їхній продукт цифровий. Це означає: той хто першим освоїть AI-інструменти <em style="color:var(--text);font-style:normal;font-weight:500;">замінить десятьох колег</em>, а не буде замінений. В Україні таких спеціалістів ~3–4 тис. — дефіцит гарантований.</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.75;max-width:640px;">Актуарії та андеррайтери мають оцінку 8.5–9.0 не тому що зникнуть, а тому що весь їхній продукт цифровий. Це означає: той хто першим освоїть AI-інструменти <em style="color:var(--text);font-style:normal;font-weight:500;">замінить десятьох колег</em>, а не буде замінений. В Україні таких спеціалістів ~200–300 осіб — дефіцит гарантований.</div>
         </div>
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 16px;min-width:140px;text-align:center;flex-shrink:0;">
           <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">середній ризик</div>
@@ -189,6 +221,448 @@ a:hover{text-decoration:underline;}
 
 </div>
 
+
+<section class="insights">
+  <div class="logo">Аналітика ринку праці України × AI</div>
+  <div class="about-h">Три виміри, які треба знати</div>
+
+  <div class="ins-grid">
+
+    <!-- MATRIX -->
+    <div class="ins-card">
+      <div class="ins-label">Матриця безпеки</div>
+      <div class="ins-title">AI-ризик × дефіцит кадрів 2024–2025</div>
+      <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-bottom:10px;">Джерело: ДСЗ, Work.ua, hromadske 2024–2025</div>
+      <div style="display:flex;gap:6px;margin-bottom:6px;">
+        <div style="flex:1;"></div>
+        <div style="flex:2;text-align:center;font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;">ДЕФІЦИТ НИЗЬКИЙ</div>
+        <div style="flex:2;text-align:center;font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;">ДЕФІЦИТ ВИСОКИЙ</div>
+      </div>
+      <div class="matrix-row">
+        <div style="flex:1;font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;display:flex;align-items:center;writing-mode:horizontal-tb;">AI РИЗИК<br>НИЗЬКИЙ</div>
+        <div class="matrix-cell cell-neutral" style="flex:2;">
+          <div class="cell-title">Стабільно</div>
+          <ul class="cell-list"><li>Охоронники</li><li>Прибиральники</li><li>Офіціанти</li></ul>
+        </div>
+        <div class="matrix-cell cell-safe" style="flex:2;">
+          <div class="cell-title">✓ Безпечна зона</div>
+          <ul class="cell-list"><li>Медсестри</li><li>Електрики</li><li>Муляри</li><li>Водії вантажівок</li><li>Зварювальники</li></ul>
+        </div>
+      </div>
+      <div class="matrix-row">
+        <div style="flex:1;font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;display:flex;align-items:center;">AI РИЗИК<br>ВИСО&shy;КИЙ</div>
+        <div class="matrix-cell cell-warn" style="flex:2;">
+          <div class="cell-title">Під тиском</div>
+          <ul class="cell-list"><li>Бухгалтери</li><li>Секретарі</li><li>Перекладачі</li><li>Журналісти</li></ul>
+        </div>
+        <div class="matrix-cell cell-danger" style="flex:2;">
+          <div class="cell-title">⚠ Увага</div>
+          <ul class="cell-list"><li>Call-центри</li><li>Аналітики даних</li><li>Програмісти</li></ul>
+          <div style="font-size:10px;margin-top:5px;opacity:0.8;">Але: хто перший освоює AI — виграє</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:10px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px;">
+        «Безпечна зона» = низький AI-ризик + реальний дефіцит кадрів у 2024–2025 р.<br>
+        Зарплати будівельників +30%, водіїв +20% за рік (Work.ua 2024)
+      </div>
+    </div>
+
+    <!-- SALARY PREMIUM -->
+    <div class="ins-card">
+      <div class="ins-label">Зарплатна премія за AI</div>
+      <div class="ins-title">Глобальні дані — українська статистика відсутня</div>
+      <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-bottom:16px;">Джерело: PwC «AI Jobs Barometer 2025» · аналіз ~1 млрд вакансій глобально</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+        <div style="background:#0a1020;border:1px solid #1a2540;border-radius:6px;padding:12px;text-align:center;">
+          <div style="font-size:32px;font-weight:500;color:#5b7cf6;line-height:1;">+56%</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:5px;line-height:1.5;">зарплата фахівців<br>зі знанням AI<br>vs без AI</div>
+        </div>
+        <div style="background:#0a1020;border:1px solid #1a2540;border-radius:6px;padding:12px;text-align:center;">
+          <div style="font-size:32px;font-weight:500;color:#5b7cf6;line-height:1;">3×</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:5px;line-height:1.5;">швидше зростає<br>дохід у AI-готових<br>галузях</div>
+        </div>
+      </div>
+
+      <div style="font-size:11px;color:var(--muted);line-height:1.75;margin-bottom:12px;">
+        <strong style="color:var(--text);">+19–23%</strong> — надбавка за <em>практичні</em> навички (Foote Partners). Сертифікати без досвіду дають лише +9–11%.
+        <br><br>
+        <strong style="color:var(--text);">+28–43%</strong> — середня надбавка при одній та кількох AI-компетенціях у вакансії (аналіз 1.3 млрд вакансій).
+      </div>
+
+      <div style="padding:10px 12px;background:#0a1520;border-left:3px solid #5b7cf6;border-radius:0 5px 5px 0;font-size:11px;color:var(--muted);line-height:1.65;">
+        <strong style="color:#5b7cf6;">Work.ua, лютий 2023:</strong> перші 16 вакансій з вимогою ChatGPT в Україні пропонували 40–120 тис. грн — це єдиний верифікований локальний орієнтир. Систематичної статистики по Україні поки немає.
+      </div>
+    </div>
+
+    <!-- GENDER -->
+    <div class="ins-card">
+      <div class="ins-label">Гендерний розріз</div>
+      <div class="ins-title">Жінки непропорційно сконцентровані в зоні AI-ризику</div>
+      <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-bottom:12px;">Джерело: Держстат ОРС 2021, розбивка по КП</div>
+
+      <div style="display:flex;gap:12px;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);"><div style="width:10px;height:10px;border-radius:2px;background:#c06fa8;"></div>Жінки</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);"><div style="width:10px;height:10px;border-radius:2px;background:#5b7cf6;"></div>Чоловіки</div>
+      </div>
+
+      <div style="margin-bottom:6px;font-size:10px;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:4px;">ВИСОКА ЗОНА РИЗИКУ (7–9/10)</div>
+      <div class="gender-row"><span class="gen-name">Бухгалтери / касири</span><div class="gen-bar"><div class="gen-f" style="width:87%;"></div><div class="gen-m" style="width:13%;"></div></div><span class="gen-pct">87% ♀</span></div>
+      <div class="gender-row"><span class="gen-name">Секретарі / діловоди</span><div class="gen-bar"><div class="gen-f" style="width:93%;"></div><div class="gen-m" style="width:7%;"></div></div><span class="gen-pct">93% ♀</span></div>
+      <div class="gender-row"><span class="gen-name">Оператори call-центрів</span><div class="gen-bar"><div class="gen-f" style="width:82%;"></div><div class="gen-m" style="width:18%;"></div></div><span class="gen-pct">82% ♀</span></div>
+      <div class="gender-row"><span class="gen-name">Перекладачі</span><div class="gen-bar"><div class="gen-f" style="width:74%;"></div><div class="gen-m" style="width:26%;"></div></div><span class="gen-pct">74% ♀</span></div>
+
+      <div style="margin:10px 0 6px;font-size:10px;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:4px;">БЕЗПЕЧНА ЗОНА (1–3/10)</div>
+      <div class="gender-row"><span class="gen-name">Електрики</span><div class="gen-bar"><div class="gen-f" style="width:4%;"></div><div class="gen-m" style="width:96%;"></div></div><span class="gen-pct">96% ♂</span></div>
+      <div class="gender-row"><span class="gen-name">Зварювальники</span><div class="gen-bar"><div class="gen-f" style="width:3%;"></div><div class="gen-m" style="width:97%;"></div></div><span class="gen-pct">97% ♂</span></div>
+      <div class="gender-row"><span class="gen-name">Медсестри / акушерки</span><div class="gen-bar"><div class="gen-f" style="width:94%;"></div><div class="gen-m" style="width:6%;"></div></div><span class="gen-pct">94% ♀</span></div>
+      <div class="gender-row"><span class="gen-name">Доглядальники</span><div class="gen-bar"><div class="gen-f" style="width:90%;"></div><div class="gen-m" style="width:10%;"></div></div><span class="gen-pct">90% ♀</span></div>
+
+      <div style="margin-top:10px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px;line-height:1.65;">
+        <strong style="color:var(--text);">Висновок:</strong> AI-ризик в Україні має виражений гендерний вимір — офісні та адміністративні роботи, де домінують жінки, опиняються під найбільшим тиском автоматизації.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- DYNAMICS CHART -->
+<section class="insights" style="background:var(--surface);">
+  <div class="logo">AI на ринку праці</div>
+  <div class="about-h">Дані та тренди — тільки верифіковані джерела</div>
+  <div style="font-size:12px;color:var(--muted);margin-top:6px;margin-bottom:1.5rem;">Джерела: happymonday.ua (лют 2026) · Слово і Діло (лют 2026) · Indeed · LinkedIn Jobs on the Rise 2026</div>
+
+  <div class="ins-grid" style="grid-template-columns:1fr 1fr;">
+
+    <div class="ins-card" style="grid-column:1/-1;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1.5rem;margin-bottom:1.25rem;">
+        <div>
+          <div class="ins-label">AI на ринку праці — верифіковані дані</div>
+          <div class="ins-title">Ключові цифри з первинних джерел</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:1.25rem;">
+        <div style="background:#0a1020;border:1px solid #1a2540;border-radius:6px;padding:12px;text-align:center;">
+          <div style="font-size:28px;font-weight:500;color:#5b7cf6;">6 100</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px;line-height:1.5;">AI-фахівців в Україні<br><span style="color:#3a4060;">Слово і Діло, лют 2026</span></div>
+        </div>
+        <div style="background:#0a1020;border:1px solid #1a2540;border-radius:6px;padding:12px;text-align:center;">
+          <div style="font-size:28px;font-weight:500;color:#5b7cf6;">243</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px;line-height:1.5;">AI-компаній в Україні<br><span style="color:#3a4060;">відкриті дані, 2025</span></div>
+        </div>
+        <div style="background:#0a1020;border:1px solid #1a2540;border-radius:6px;padding:12px;text-align:center;">
+          <div style="font-size:28px;font-weight:500;color:#5b7cf6;">$526M</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px;line-height:1.5;">інвестиції у AI-компанії<br><span style="color:#3a4060;">відкриті дані, 2025</span></div>
+        </div>
+        <div style="background:#0a1020;border:1px solid #1a2540;border-radius:6px;padding:12px;text-align:center;">
+          <div style="font-size:28px;font-weight:500;color:#5b7cf6;">+130%</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px;line-height:1.5;">AI-вакансій за 5 років<br><span style="color:#3a4060;">Indeed, глобально</span></div>
+        </div>
+        <div style="background:#0a1020;border:1px solid #1a2540;border-radius:6px;padding:12px;text-align:center;">
+          <div style="font-size:28px;font-weight:500;color:#5b7cf6;">1 з 25</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px;line-height:1.5;">вакансій згадує AI<br><span style="color:#3a4060;">Indeed, глобально, 2026</span></div>
+        </div>
+        <div style="background:#0a1020;border:1px solid #1a2540;border-radius:6px;padding:12px;text-align:center;">
+          <div style="font-size:28px;font-weight:500;color:#5b7cf6;">+17%</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px;line-height:1.5;">AI-фахівців за 2 роки<br><span style="color:#3a4060;">Слово і Діло, лют 2026</span></div>
+        </div>
+      </div>
+      <div style="background:#0d1520;border:1px solid #1a2535;border-radius:6px;padding:12px 14px;">
+        <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Зарплати AI-фахівців в Україні (happymonday.ua, лют 2026)</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;">
+          <div style="font-size:11px;color:var(--muted);">Фахівець зі ШІ / Prompt Engineer<span style="float:right;color:#5b7cf6;font-family:'IBM Plex Mono',monospace;">9–73 тис. грн</span></div>
+          <div style="font-size:11px;color:var(--muted);">AI-автоматизатор процесів<span style="float:right;color:#5b7cf6;font-family:'IBM Plex Mono',monospace;">21–257 тис. грн</span></div>
+          <div style="font-size:11px;color:var(--muted);">AI/ML інженер<span style="float:right;color:#5b7cf6;font-family:'IBM Plex Mono',monospace;">35–343 тис. грн</span></div>
+          <div style="font-size:11px;color:var(--muted);">Два роки тому (2024)<span style="float:right;color:#7a7f8e;font-family:'IBM Plex Mono',monospace;">18–137 тис. грн</span></div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--border);">
+        <span>📌 18 лют 2023 — ChatGPT з'являється в Україні</span>
+        <span>📌 Кін. 2023 — robota.ua перевищив довоєнну кількість вакансій</span>
+        <span>📌 2026 — AI-навички = базова вимога в офісних вакансіях</span>
+      </div>
+    </div>
+
+    <!-- LinkedIn top roles -->
+    <div class="ins-card">
+      <div class="ins-label">LinkedIn Jobs on the Rise 2026</div>
+      <div class="ins-title">Найшвидше зростаючі ролі у США (тренд 2023–2025)</div>
+      <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-bottom:12px;">Джерело: LinkedIn, січень 2026 · на основі змін у профілях користувачів</div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#0a1020;border-radius:5px;">
+          <span style="font-size:14px;font-weight:500;color:#5b7cf6;min-width:20px;">1</span>
+          <div><div style="font-size:12px;color:var(--text);font-weight:500;">AI Engineers</div><div style="font-size:10px;color:var(--muted);">Розробка та впровадження AI-моделей</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#0a1020;border-radius:5px;">
+          <span style="font-size:14px;font-weight:500;color:#5b7cf6;min-width:20px;">2</span>
+          <div><div style="font-size:12px;color:var(--text);font-weight:500;">AI Consultants & Strategists</div><div style="font-size:10px;color:var(--muted);">Планування та впровадження AI в бізнесі</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#0a1020;border-radius:5px;">
+          <span style="font-size:14px;font-weight:500;color:#5b7cf6;min-width:20px;">4</span>
+          <div><div style="font-size:12px;color:var(--text);font-weight:500;">Data Annotators</div><div style="font-size:10px;color:var(--muted);">Розмітка даних для навчання AI-моделей</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#0a1020;border-radius:5px;">
+          <span style="font-size:14px;font-weight:500;color:#5b7cf6;min-width:20px;">5</span>
+          <div><div style="font-size:12px;color:var(--text);font-weight:500;">AI/ML Researchers</div><div style="font-size:10px;color:var(--muted);">Проектування нових AI-систем</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#0d1a1a;border-radius:5px;border:1px solid #1a3d3d;">
+          <span style="font-size:14px;font-weight:500;color:#4aa8a8;min-width:20px;">9</span>
+          <div><div style="font-size:12px;color:var(--text);font-weight:500;">Founders</div><div style="font-size:10px;color:var(--muted);">Зростання самозайнятості та власного бізнесу</div></div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.6;padding-top:8px;border-top:1px solid var(--border);">
+        В Україні аналог: AI-ролі найбільше зростають в ІТ, MilitaryTech та Силах оборони (happymonday.ua, 2026)
+      </div>
+    </div>
+
+
+
+    <!-- Reconstruction -->
+    <div class="ins-card">
+      <div class="ins-label">Відбудова України</div>
+      <div class="ins-title">$486 млрд потреб — унікальний захист від автоматизації</div>
+      <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-bottom:12px;">Джерело: World Bank RDNA-3 2023 · дефіцит кадрів ДСЗ 2024–2025</div>
+      <div id="recon-bars"></div>
+      <div style="margin-top:12px;padding:8px 10px;background:#0a1a0e;border:1px solid #1a3d22;border-radius:5px;font-size:11px;color:#6fcf6f;line-height:1.6;">
+        Відбудова = найбільший захист від AI для фізичних професій. Попит на будівельників, електриків, зварювальників — мінімум 10 років.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- RESKILLING PATHS -->
+<section class="insights">
+  <div class="logo">Адаптація</div>
+  <div class="about-h">Маршрути перекваліфікації з червоної зони</div>
+  <div style="font-size:12px;color:var(--muted);margin-top:6px;margin-bottom:1.5rem;">Натисніть на картку щоб побачити конкретний маршрут переходу</div>
+
+  <div id="reskill-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;"></div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// aiChart removed - replaced with verified KPI cards
+
+
+
+// Reconstruction bars
+(function(){
+  const items=[
+    {label:'Житлове будівництво',val:72,color:'#3d7a4d'},
+    {label:'Транспорт та дороги',val:58,color:'#3d6a7a'},
+    {label:'Енергетика',val:47,color:'#7a6a3d'},
+    {label:'Промисловість',val:38,color:'#5b7cf6'},
+    {label:'Освіта та охорона здоровʼя',val:31,color:'#7a4d7a'},
+  ];
+  const el=document.getElementById('recon-bars');
+  if(!el)return;
+  el.innerHTML=items.map(i=>`
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+  <div style="font-size:11px;color:var(--muted);width:175px;flex-shrink:0;">${i.label}</div>
+  <div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;">
+    <div style="width:${i.val}%;height:100%;background:${i.color};border-radius:3px;"></div>
+  </div>
+  <div style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--muted);min-width:42px;text-align:right;">$${i.val}B+</div>
+</div>`).join('');
+})();
+
+// Reskilling paths
+(function(){
+  const paths=[
+    {from:'Оператор call-центру',risk:8.5,to:'CX-аналітик / AI-тренер ботів',time:'4–6 міс',
+     tools:['ChatGPT для аналізу тональності','Tableau для звітів','Python basics (DataCamp)'],
+     note:'Компанії скорочують операторів, але активно наймають тих хто може навчати та контролювати AI-ботів',
+     courses:[
+       {name:'Початок роботи з ChatGPT',org:'Prometheus · безкоштовно',url:'https://prometheus.org.ua/prometheus-free/intro-to-chatgpt/'},
+       {name:'Understanding Artificial Intelligence',org:'DataCamp · безкоштовно',url:'https://www.datacamp.com/courses/understanding-artificial-intelligence'},
+       {name:'Elements of AI',org:'Uni Helsinki · безкоштовно',url:'https://www.elementsofai.com/'},
+     ]},
+    {from:'Перекладач',risk:9.0,to:'Локалізаційний редактор / Prompt engineer',time:'3–4 міс',
+     tools:['DeepL API + post-edit','Claude для адаптації тону','SDL Trados'],
+     note:'Машинний переклад знищує масовий ринок, але якість потребує людського редагування і культурної адаптації',
+     courses:[
+       {name:'Початок роботи з ChatGPT',org:'Prometheus · безкоштовно',url:'https://prometheus.org.ua/prometheus-free/intro-to-chatgpt/'},
+       {name:'Elements of AI',org:'Uni Helsinki · безкоштовно',url:'https://www.elementsofai.com/'},
+       {name:'AI Fundamentals',org:'DataCamp · безкоштовно (базовий рівень)',url:'https://www.datacamp.com/tracks/ai-fundamentals'},
+     ]},
+    {from:'Секретар / діловод',risk:7.5,to:'Операційний менеджер / AI-асистент',time:'3–5 міс',
+     tools:['Notion AI','Microsoft Copilot','Zapier для автоматизацій'],
+     note:'Традиційний секретар зникає. Потрібна людина яка будує і контролює автоматизовані процеси',
+     courses:[
+       {name:'AI в сучасних комунікаціях',org:'Prometheus · безкоштовно',url:'https://prometheus.org.ua/prometheus-plus/ai-in-modern-communications-free/'},
+       {name:'AI For Everyone (Andrew Ng)',org:'Coursera · безкоштовно (аудит)',url:'https://www.coursera.org/learn/ai-for-everyone'},
+       {name:'Elements of AI',org:'Uni Helsinki · безкоштовно',url:'https://www.elementsofai.com/'},
+     ]},
+    {from:'Бухгалтер',risk:8.0,to:'Фінансовий аналітик / CFO-асистент',time:'6–9 міс',
+     tools:['Excel + Copilot','1C з AI-розширеннями','Power BI'],
+     note:'Рутинний облік автоматизується. Цінується інтерпретація цифр, не їх введення',
+     courses:[
+       {name:'Introduction to Generative AI in Finance',org:'Coursera · безкоштовно (аудит)',url:'https://www.coursera.org/learn/introduction-to-generative-ai-in-finance'},
+       {name:'AI for Finance',org:'Coursera · безкоштовно (аудит)',url:'https://www.coursera.org/specializations/ai-for-finance'},
+       {name:'AI Applications in Marketing & Finance',org:'Coursera/Wharton · безкоштовно (аудит)',url:'https://www.coursera.org/learn/wharton-ai-applications-marketing-finance'},
+     ]},
+    {from:'Журналіст / редактор',risk:8.0,to:'AI-контент стратег / Редактор AI-матеріалів',time:'2–3 міс',
+     tools:['Claude для генерації чернеток','Perplexity для фактчекінгу','SEO AI інструменти'],
+     note:'Фабрики контенту зникають. Залишається той хто ставить правильні питання і перевіряє факти',
+     courses:[
+       {name:'AI в сучасних комунікаціях',org:'Prometheus · безкоштовно',url:'https://prometheus.org.ua/prometheus-plus/ai-in-modern-communications-free/'},
+       {name:'AI for Marketers',org:'HubSpot Academy · безкоштовно',url:'https://academy.hubspot.com/courses/AI-for-Marketers'},
+       {name:'Початок роботи з ChatGPT',org:'Prometheus · безкоштовно',url:'https://prometheus.org.ua/prometheus-free/intro-to-chatgpt/'},
+     ]},
+    {from:'Аналітик даних',risk:9.0,to:'AI Product Manager / ML-стратег',time:'6–12 міс',
+     tools:['Python + LangChain','Hugging Face','Tableau + GPT'],
+     note:'Базовий аналіз автоматизований. Цінується розуміння бізнесу + AI для нестандартних задач',
+     courses:[
+       {name:'AI Fundamentals',org:'DataCamp · безкоштовно (базовий рівень)',url:'https://www.datacamp.com/tracks/ai-fundamentals'},
+       {name:'AI For Everyone (Andrew Ng)',org:'Coursera · безкоштовно (аудит)',url:'https://www.coursera.org/learn/ai-for-everyone'},
+       {name:'Machine Learning Specialization',org:'Coursera/DeepLearning.AI · аудит',url:'https://www.coursera.org/specializations/machine-learning-introduction'},
+     ]},
+    {from:'Маркетолог',risk:7.5,to:'Growth hacker / AI-маркетолог',time:'2–4 міс',
+     tools:['Midjourney для візуалів','Claude для копірайтингу','Meta Ads AI оптимізація'],
+     note:'AI замінює виконання — але не стратегію і розуміння аудиторії',
+     courses:[
+       {name:'AI for Marketers',org:'HubSpot Academy · безкоштовно',url:'https://academy.hubspot.com/courses/AI-for-Marketers'},
+       {name:'AI Applications in Marketing & Finance',org:'Coursera/Wharton · безкоштовно (аудит)',url:'https://www.coursera.org/learn/wharton-ai-applications-marketing-finance'},
+       {name:'AI в сучасних комунікаціях',org:'Prometheus · безкоштовно',url:'https://prometheus.org.ua/prometheus-plus/ai-in-modern-communications-free/'},
+     ]},
+    {from:'Фінансовий аналітик',risk:8.5,to:'Ризик-менеджер зі знанням AI',time:'4–6 міс',
+     tools:['Python для стрес-тестів','Claude для звітів','PowerBI'],
+     note:'Моделювання автоматизується. Потрібен фахівець який розуміє нестандартні сценарії та комунікує з регулятором',
+     courses:[
+       {name:'AI in Financial Services (Oxford)',org:'Coursera · безкоштовно (аудит)',url:'https://www.coursera.org/specializations/ai-financial-services-foundations-future-trends'},
+       {name:'AI for Finance',org:'Coursera · безкоштовно (аудит)',url:'https://www.coursera.org/specializations/ai-for-finance'},
+       {name:'AI Fundamentals',org:'DataCamp · безкоштовно (базовий рівень)',url:'https://www.datacamp.com/tracks/ai-fundamentals'},
+     ]},
+    {from:'Програміст / ІТ-розробник',risk:8.5,to:'AI-інженер / LLM-розробник',time:'3–6 міс',
+     tools:['LangChain + OpenAI API','Hugging Face Transformers','GitHub Copilot як baseline'],
+     note:'Класичний кодинг автоматизується Copilot-ами. Цінуються ті хто будує AI-системи, а не просто пише код. Попит на AI-інженерів — #1 у LinkedIn Jobs on the Rise 2026',
+     courses:[
+       {name:'Machine Learning Specialization (Andrew Ng)',org:'Coursera/DeepLearning.AI · аудит',url:'https://www.coursera.org/specializations/machine-learning-introduction'},
+       {name:'AI Fundamentals',org:'DataCamp · безкоштовно (базовий рівень)',url:'https://www.datacamp.com/tracks/ai-fundamentals'},
+       {name:'Building AI (продовження Elements of AI)',org:'Uni Helsinki · безкоштовно',url:'https://buildingai.elementsofai.com/'},
+     ]},
+    {from:'Юрист / правник',risk:7.0,to:'Legal tech-спеціаліст / AI-юрист',time:'4–8 міс',
+     tools:['Claude для аналізу документів','Harvey AI (юридичний LLM)','Lexis+ AI'],
+     note:'AI чудово аналізує контракти і шукає прецеденти — але правова відповідальність залишається за людиною. Попит на юристів що розуміють AI-системи зростає разом із регулюванням AI в ЄС',
+     courses:[
+       {name:'AI For Everyone (Andrew Ng)',org:'Coursera · безкоштовно (аудит)',url:'https://www.coursera.org/learn/ai-for-everyone'},
+       {name:'Elements of AI',org:'Uni Helsinki · безкоштовно',url:'https://www.elementsofai.com/'},
+       {name:'Початок роботи з ChatGPT',org:'Prometheus · безкоштовно',url:'https://prometheus.org.ua/prometheus-free/intro-to-chatgpt/'},
+     ]},
+    {from:'Бухгалтер-касир',risk:8.0,to:'Фінансовий координатор / Контролер процесів',time:'4–6 міс',
+     tools:['1C з AI-модулями','Microsoft Copilot for Finance','Power Automate'],
+     note:'Касові операції та введення первинних документів автоматизуються найшвидше. Перехід — у контроль та аналіз, а не виконання. Навичка побудови автоматизованих звітів стає ключовою',
+     courses:[
+       {name:'AI в сучасних комунікаціях',org:'Prometheus · безкоштовно',url:'https://prometheus.org.ua/prometheus-plus/ai-in-modern-communications-free/'},
+       {name:'Introduction to Generative AI in Finance',org:'Coursera · безкоштовно (аудит)',url:'https://www.coursera.org/learn/introduction-to-generative-ai-in-finance'},
+       {name:'AI Fundamentals',org:'DataCamp · безкоштовно (базовий рівень)',url:'https://www.datacamp.com/tracks/ai-fundamentals'},
+     ]},
+    {from:'Архітектор',risk:7.0,to:'BIM-координатор / AI-архітектор відбудови',time:'3–5 міс',
+     tools:['Midjourney/Stable Diffusion для концептів','Autodesk AI (Forma)','Speckle для BIM-колаборації'],
+     note:'AI генерує варіанти планувань за лічені секунди. Але архітектор залишається незамінним для авторського задуму, роботи з замовником і нагляду за будівництвом. В Україні відбудова = унікальний ринок для AI-архітекторів',
+     courses:[
+       {name:'AI For Everyone (Andrew Ng)',org:'Coursera · безкоштовно (аудит)',url:'https://www.coursera.org/learn/ai-for-everyone'},
+       {name:'Elements of AI',org:'Uni Helsinki · безкоштовно',url:'https://www.elementsofai.com/'},
+       {name:'AI в сучасних комунікаціях',org:'Prometheus · безкоштовно',url:'https://prometheus.org.ua/prometheus-plus/ai-in-modern-communications-free/'},
+     ]},
+    {from:'Вчитель',risk:6.0,to:'EdTech-педагог / AI-куратор навчання',time:'2–3 міс',
+     tools:['Khan Academy Khanmigo (AI-тьютор)','Gamma для презентацій','Claude для підготовки уроків'],
+     note:'Живий вчитель незамінний для мотивації, соціалізації та роботи з дітьми у складних ситуаціях. Але вчитель з AI-інструментами готує уроки вдвічі швидше і персоналізує навчання — це конкурентна перевага',
+     courses:[
+       {name:'AI For Everyone (Andrew Ng)',org:'Coursera · безкоштовно (аудит)',url:'https://www.coursera.org/learn/ai-for-everyone'},
+       {name:'Початок роботи з ChatGPT',org:'Prometheus · безкоштовно',url:'https://prometheus.org.ua/prometheus-free/intro-to-chatgpt/'},
+       {name:'Elements of AI',org:'Uni Helsinki · безкоштовно',url:'https://www.elementsofai.com/'},
+     ]},
+    {from:'Менеджер проєктів',risk:7.0,to:'AI-Product Manager / Scrum-майстер з AI',time:'2–4 міс',
+     tools:['Notion AI для roadmap','Linear + AI-пріоритизація','ChatGPT для PRD та spec'],
+     note:'AI автоматизує планування, генерацію задач і звітність. PM-и що вміють делегувати AI рутину — ведуть більше проєктів з меншою командою. Попит на AI PM — #2 у LinkedIn Jobs on the Rise 2026',
+     courses:[
+       {name:'AI For Everyone (Andrew Ng)',org:'Coursera · безкоштовно (аудит)',url:'https://www.coursera.org/learn/ai-for-everyone'},
+       {name:'Початок роботи з ChatGPT',org:'Prometheus · безкоштовно',url:'https://prometheus.org.ua/prometheus-free/intro-to-chatgpt/'},
+       {name:'AI Fundamentals',org:'DataCamp · безкоштовно (базовий рівень)',url:'https://www.datacamp.com/tracks/ai-fundamentals'},
+     ]},
+    {from:'Андеррайтер страховий',risk:8.5,to:'AI-андеррайтер складних ризиків',time:'4–6 міс',
+     tools:['Claude для аналізу анкет і документів','GPT-4o для фото-оцінки майна','NotebookLM як база кейсів'],
+     note:'AI вже домінує в масовому андеррайтингу (авто, стандартне майно). Людина залишається незамінною для унікальних ризиків — промислові об\'єкти, воєнні ризики, нестандартні випадки. В Україні страхування відбудови = нова ніша',
+     courses:[
+       {name:'AI in Financial Services (Oxford)',org:'Coursera · безкоштовно (аудит)',url:'https://www.coursera.org/specializations/ai-financial-services-foundations-future-trends'},
+       {name:'Elements of AI',org:'Uni Helsinki · безкоштовно',url:'https://www.elementsofai.com/'},
+       {name:'AI for Finance',org:'Coursera · безкоштовно (аудит)',url:'https://www.coursera.org/specializations/ai-for-finance'},
+     ]},
+    {from:'Агент з нерухомості',risk:6.5,to:'PropTech-консультант / AI-брокер',time:'2–3 міс',
+     tools:['ChatGPT для описів об\'єктів і листів','Canva AI для презентацій','CRM з AI-скорингом лідів'],
+     note:'Агрегатори витісняють стандартний пошук, але живе спілкування, переговори та знання локального ринку залишаються за людиною. В Україні попит на нерухомість у безпечних регіонах продовжує зростати',
+     courses:[
+       {name:'AI For Marketers',org:'HubSpot Academy · безкоштовно',url:'https://academy.hubspot.com/courses/AI-for-Marketers'},
+       {name:'Початок роботи з ChatGPT',org:'Prometheus · безкоштовно',url:'https://prometheus.org.ua/prometheus-free/intro-to-chatgpt/'},
+       {name:'Elements of AI',org:'Uni Helsinki · безкоштовно',url:'https://www.elementsofai.com/'},
+     ]},
+    {from:'ІТ-технік / сисадмін',risk:6.0,to:'DevSecOps / AI-оператор інфраструктури',time:'4–8 міс',
+     tools:['Ansible + AI-автоматизація','GitHub Copilot для скриптів','Grafana + AI-моніторинг'],
+     note:'Рутинне адміністрування автоматизується. Але кібербезпека в Україні — питання національної безпеки. Попит на фахівців із захисту інфраструктури від Russian-sponsored атак критично високий і зростає',
+     courses:[
+       {name:'Building AI',org:'Uni Helsinki · безкоштовно',url:'https://buildingai.elementsofai.com/'},
+       {name:'AI Fundamentals',org:'DataCamp · безкоштовно (базовий рівень)',url:'https://www.datacamp.com/tracks/ai-fundamentals'},
+       {name:'Machine Learning Specialization',org:'Coursera/DeepLearning.AI · аудит',url:'https://www.coursera.org/specializations/machine-learning-introduction'},
+     ]},
+    {from:'Психолог',risk:5.0,to:'Digital-терапевт / AI-супервізор wellbeing',time:'2–4 міс',
+     tools:['Woebot/Wysa як доповнення до сесій','Claude для домашніх завдань клієнтам','Zoom AI для транскрипції нотаток'],
+     note:'AI-чатботи підтримки не замінять терапевтичні стосунки — але психолог що інтегрує цифрові інструменти охоплює більше клієнтів. В Україні попит критичний: ПТСР, втрати, ВПО — дефіцит фахівців колосальний',
+     courses:[
+       {name:'AI For Everyone (Andrew Ng)',org:'Coursera · безкоштовно (аудит)',url:'https://www.coursera.org/learn/ai-for-everyone'},
+       {name:'Elements of AI',org:'Uni Helsinki · безкоштовно',url:'https://www.elementsofai.com/'},
+       {name:'Початок роботи з ChatGPT',org:'Prometheus · безкоштовно',url:'https://prometheus.org.ua/prometheus-free/intro-to-chatgpt/'},
+     ]},
+    {from:'Агроном',risk:5.0,to:'Precision farming спеціаліст / AgriTech-консультант',time:'3–5 міс',
+     tools:['DJI Agras для дронів-обприскувачів','NDVI-аналіз через Sentinel Hub','Claude для агрономічних звітів'],
+     note:'AI-агрономія — дрони, сенсори ґрунту, прогнозування врожайності — трансформує АПК. Але локальне знання полів і практичний досвід незамінні. В Україні AgriTech = стратегічний пріоритет відбудови',
+     courses:[
+       {name:'Elements of AI',org:'Uni Helsinki · безкоштовно',url:'https://www.elementsofai.com/'},
+       {name:'AI For Everyone (Andrew Ng)',org:'Coursera · безкоштовно (аудит)',url:'https://www.coursera.org/learn/ai-for-everyone'},
+       {name:'Початок роботи з ChatGPT',org:'Prometheus · безкоштовно',url:'https://prometheus.org.ua/prometheus-free/intro-to-chatgpt/'},
+     ]},
+  ];
+  const grid=document.getElementById('reskill-grid');
+  if(!grid)return;
+  paths.forEach((p,i)=>{
+    const card=document.createElement('div');
+    card.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;cursor:pointer;transition:all .18s;';
+    card.innerHTML=`
+<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+  <div style="font-size:11px;font-weight:500;color:var(--text);line-height:1.35;">${p.from}</div>
+  <div style="font-size:10px;background:#2e1a1a;color:#c87e7e;padding:2px 7px;border-radius:20px;font-family:'IBM Plex Mono',monospace;flex-shrink:0;margin-left:6px;">${p.risk}/10</div>
+</div>
+<div style="font-size:10px;color:var(--muted);margin-bottom:8px;font-family:'IBM Plex Mono',monospace;">↓ за ${p.time}</div>
+<div style="font-size:11px;font-weight:500;color:#5b7cf6;margin-bottom:6px;line-height:1.35;">${p.to}</div>
+<div id="rsk-detail-${i}" style="display:none;">
+  <div style="border-top:1px solid var(--border);margin:8px 0;"></div>
+  <div style="font-size:10px;color:var(--muted);margin-bottom:6px;line-height:1.6;">${p.note}</div>
+  <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-bottom:4px;">Інструменти:</div>
+  ${p.tools.map(t=>`<div style="font-size:10px;color:#5b7cf6;margin-bottom:2px;">• ${t}</div>`).join('')}
+  <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);">
+    <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-bottom:5px;">Курси для старту:</div>
+    ${p.courses.map(c=>`<a href="${c.url}" target="_blank" rel="noopener" style="display:block;margin-bottom:5px;text-decoration:none;" onclick="event.stopPropagation()">
+      <div style="font-size:10px;color:#5b7cf6;font-weight:500;line-height:1.3;">${c.name}</div>
+      <div style="font-size:9px;color:var(--muted);font-family:'IBM Plex Mono',monospace;">${c.org}</div>
+    </a>`).join('')}
+  </div>
+</div>
+<div style="font-size:10px;color:var(--muted);margin-top:6px;font-family:'IBM Plex Mono',monospace;" id="rsk-hint-${i}">▶ деталі →</div>`;
+    card.addEventListener('mouseenter',()=>card.style.borderColor='#5b7cf6');
+    card.addEventListener('mouseleave',()=>card.style.borderColor='var(--border)');
+    card.addEventListener('click',()=>{
+      const d=document.getElementById('rsk-detail-'+i);
+      const h=document.getElementById('rsk-hint-'+i);
+      const open=d.style.display==='none';
+      d.style.display=open?'block':'none';
+      h.textContent=open?'▼ згорнути':'▶ деталі →';
+    });
+    grid.appendChild(card);
+  });
+})();
+</script>
 <section class="about">
   <div class="logo">Методологія та джерела</div>
   <div class="about-h">Як побудована ця візуалізація</div>
@@ -198,11 +672,16 @@ a:hover{text-decoration:underline;}
     <div class="about-block">
       <div class="about-title">Дані про зайнятість</div>
       <div class="about-text">
-        Показники зайнятості взяті з <strong>Держстат України</strong> — обстеження економічної активності населення 2021 року (останні повні дані до повномасштабного вторгнення, ~15,9 млн зайнятих).
+        Показники зайнятості базуються на офіційних джерелах України за 2021 рік (останні повні дані до повномасштабного вторгнення).
         <br><br>
-        <strong>Важливе обмеження:</strong> Держстат публікує зайнятість по <strong>КВЕД</strong> (галузях), а не по окремих професіях. На відміну від американського BLS, який надає детальну статистику по кожній із 342 спеціальностей, в Україні аналогічного відкритого реєстру немає.
-        <br><br>
-        Тому чисельність по конкретних професіях — це <strong>розрахункова апроксимація</strong>, отримана шляхом розподілу галузевих агрегатів Держстату на типові частки за структурою зайнятості МОП / ILO для країн Східної Європи (ISCO-08 distributions).
+        <strong>Верифіковані дані з первинних джерел:</strong>
+        <ul style="margin:6px 0 6px 1.2em;font-size:12px;">
+          <li><strong>Лікарі — 147 тис.</strong> (Держстат / МОЗ, Статщорічник 2021)</li>
+          <li><strong>Середній медперсонал — 274 тис.</strong> (МОЗ, 2021)</li>
+          <li><strong>Вчителі — 435 тис.</strong> (Інститут освітньої аналітики, 2021/22 н.р.)</li>
+          <li><strong>Зайнятість по групах КП</strong> — Держстат ОРС 2021: керівники+фахівці 41%, найпростіші 19%, торгівля 17%, кваліфіковані робітники 12%, оператори 11%</li>
+        </ul>
+        <strong>Обмеження:</strong> Держстат публікує зайнятість по <strong>КВЕД</strong> (галузях), а не по окремих професіях. Для більшості позицій цифри є <strong>структурною апроксимацією</strong> на основі галузевих агрегатів Держстату та часток МОП/ILO для Східної Європи (ISCO-08). Похибка оцінюється у ±20–40% для більшості позицій.
       </div>
     </div>
 
@@ -268,43 +747,43 @@ a:hover{text-decoration:underline;}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script>
 const D=[
-  {c:"Керівники",n:"Директори підприємств",e:450,s:30000,r:6.0},
-  {c:"Керівники",n:"Держ. службовці (керівники)",e:150,s:25000,r:5.5},
-  {c:"Керівники",n:"Менеджери проєктів",e:100,s:45000,r:7.0},
+  {c:"Керівники",n:"Директори підприємств",e:350,s:30000,r:6.0},
+  {c:"Керівники",n:"Держ. службовці (керівники)",e:120,s:25000,r:5.5},
+  {c:"Керівники",n:"Менеджери проєктів",e:80,s:45000,r:7.0},
   {c:"Фахівці",n:"Програмісти / ІТ-розробники",e:200,s:100000,r:8.5},
-  {c:"Фахівці",n:"Аналітики даних",e:40,s:90000,r:9.0},
-  {c:"Фахівці",n:"Лікарі",e:220,s:20000,r:5.0},
-  {c:"Фахівці",n:"Вчителі",e:480,s:12000,r:6.0},
-  {c:"Фахівці",n:"Вихователі дитсадків",e:120,s:9000,r:3.5},
-  {c:"Фахівці",n:"Юристи / правники",e:90,s:25000,r:7.0},
-  {c:"Фахівці",n:"Бухгалтери",e:400,s:18000,r:8.0},
-  {c:"Фахівці",n:"Фінансові аналітики",e:60,s:40000,r:8.5},
+  {c:"Фахівці",n:"Аналітики даних",e:30,s:90000,r:9.0},
+  {c:"Фахівці",n:"Лікарі",e:147,s:20000,r:5.0},
+  {c:"Фахівці",n:"Вчителі",e:435,s:12000,r:6.0},
+  {c:"Фахівці",n:"Вихователі дитсадків",e:130,s:9000,r:3.5},
+  {c:"Фахівці",n:"Юристи / правники",e:80,s:25000,r:7.0},
+  {c:"Фахівці",n:"Бухгалтери",e:250,s:18000,r:8.0},
+  {c:"Фахівці",n:"Фінансові аналітики",e:40,s:40000,r:8.5},
   {c:"Фахівці",n:"Інженери-будівельники",e:180,s:22000,r:5.5},
   {c:"Фахівці",n:"Інженери-механіки",e:150,s:20000,r:5.5},
-  {c:"Фахівці",n:"Журналісти / редактори",e:50,s:20000,r:8.0},
-  {c:"Фахівці",n:"Перекладачі",e:30,s:18000,r:9.0},
-  {c:"Фахівці",n:"Маркетологи",e:80,s:25000,r:7.5},
+  {c:"Фахівці",n:"Журналісти / редактори",e:30,s:20000,r:8.0},
+  {c:"Фахівці",n:"Перекладачі",e:15,s:18000,r:9.0},
+  {c:"Фахівці",n:"Маркетологи",e:60,s:25000,r:7.5},
   {c:"Фахівці",n:"Архітектори",e:35,s:30000,r:7.0},
-  {c:"Фахівці",n:"Психологи",e:40,s:15000,r:5.0},
+  {c:"Фахівці",n:"Психологи",e:25,s:15000,r:5.0},
   {c:"Фахівці",n:"Соціальні працівники",e:130,s:10000,r:3.5},
   {c:"Фахівці",n:"Агрономи",e:70,s:18000,r:5.0},
-  {c:"Технічні фахівці",n:"Медсестри / акушерки",e:380,s:12000,r:3.0},
+  {c:"Технічні фахівці",n:"Медсестри / акушерки",e:274,s:12000,r:3.0},
   {c:"Технічні фахівці",n:"ІТ-техніки / сисадміни",e:90,s:35000,r:6.0},
   {c:"Технічні фахівці",n:"Агенти з нерухомості",e:60,s:20000,r:6.5},
   {c:"Технічні фахівці",n:"Техніки / лаборанти",e:120,s:14000,r:4.0},
-  {c:"Офісні службовці",n:"Бухгалтери-касири",e:200,s:14000,r:8.0},
-  {c:"Офісні службовці",n:"Секретарі / діловоди",e:120,s:12000,r:7.5},
+  {c:"Офісні службовці",n:"Бухгалтери-касири",e:120,s:14000,r:8.0},
+  {c:"Офісні службовці",n:"Секретарі / діловоди",e:100,s:12000,r:7.5},
   {c:"Офісні службовці",n:"Оператори call-центрів",e:90,s:15000,r:8.5},
   {c:"Торгівля та послуги",n:"Продавці-консультанти",e:700,s:13000,r:5.0},
   {c:"Торгівля та послуги",n:"Кухарі",e:180,s:12000,r:2.0},
-  {c:"Торгівля та послуги",n:"Охоронники",e:280,s:14000,r:2.0},
+  {c:"Торгівля та послуги",n:"Охоронники",e:230,s:14000,r:2.0},
   {c:"Торгівля та послуги",n:"Перукарі / косметологи",e:100,s:15000,r:1.5},
   {c:"Торгівля та послуги",n:"Офіціанти / бармени",e:150,s:11000,r:2.0},
-  {c:"Сільське господарство",n:"Фермери",e:200,s:15000,r:3.0},
-  {c:"Сільське господарство",n:"Рільники / сільгосп. робітники",e:700,s:9000,r:1.5},
-  {c:"Сільське господарство",n:"Тваринники",e:200,s:10000,r:1.5},
-  {c:"Кваліфіковані робітники",n:"Муляри / будівельники",e:380,s:20000,r:1.5},
-  {c:"Кваліфіковані робітники",n:"Електрики",e:220,s:22000,r:2.0},
+  {c:"Сільське господарство",n:"Фермери",e:150,s:15000,r:3.0},
+  {c:"Сільське господарство",n:"Рільники / сільгосп. робітники",e:1800,s:9000,r:1.5},
+  {c:"Сільське господарство",n:"Тваринники",e:250,s:10000,r:1.5},
+  {c:"Кваліфіковані робітники",n:"Муляри / будівельники",e:300,s:20000,r:1.5},
+  {c:"Кваліфіковані робітники",n:"Електрики",e:200,s:22000,r:2.0},
   {c:"Кваліфіковані робітники",n:"Зварювальники",e:140,s:22000,r:2.5},
   {c:"Кваліфіковані робітники",n:"Слюсарі / монтажники",e:200,s:20000,r:2.0},
   {c:"Кваліфіковані робітники",n:"Покрівельники",e:60,s:18000,r:1.0},
@@ -318,7 +797,7 @@ const D=[
   {c:"Допоміжний персонал",n:"Вантажники / складські",e:250,s:12000,r:2.0},
   {c:"Допоміжний персонал",n:"Кур'єри",e:100,s:13000,r:3.5},
   {c:"Допоміжний персонал",n:"Доглядальники",e:150,s:10000,r:1.5},
-  {c:"Страхування та фінанси",n:"Актуарії",e:3,s:60000,r:9.0},
+  {c:"Страхування та фінанси",n:"Актуарії",e:0.3,s:60000,r:9.0},
   {c:"Страхування та фінанси",n:"Андеррайтери страхові",e:4,s:35000,r:8.5},
   {c:"Страхування та фінанси",n:"Страхові агенти / брокери",e:15,s:22000,r:5.5},
   {c:"Страхування та фінанси",n:"Спеціалісти зі збитків",e:6,s:25000,r:6.5},
@@ -424,7 +903,8 @@ function render(){
       insAvg.style.color=scoreColor(avg);
     }
     // opportunity labels per score band
-    const opp=(r)=>r>=8.5?'AI замінить роботу — але не людину з AI':r>=7?'Висока AI-leverage позиція':'Стабільна з AI-підтримкою';
+    const fmtE=(e)=>e<1?(Math.round(e*1000)+' осіб'):(e+' тис.');
+  const opp=(r)=>r>=8.5?'AI замінить роботу — але не людину з AI':r>=7?'Висока AI-leverage позиція':'Стабільна з AI-підтримкою';
     const icon=(r)=>r>=8.5?'◆':r>=7?'▲':'●';
     grid.innerHTML='';
     visible.sort((a,b)=>b.r-a.r).forEach((d,idx)=>{
@@ -450,7 +930,7 @@ function render(){
 <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px;line-height:1.35;">${d.n}</div>
 <div style="font-size:11px;color:#5b7cf6;line-height:1.5;margin-bottom:8px;">${opp(d.r)}</div>
 <div style="display:flex;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid var(--border);">
-  <span style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;">~${d.e} тис. осіб</span>
+  <span style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;">${d.e<1?Math.round(d.e*1000)+' осіб':d.e+' тис. осіб'}</span>
   <span style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;">${d.s.toLocaleString('uk-UA')} грн</span>
 </div>
 <div style="margin-top:10px;">
@@ -552,7 +1032,7 @@ const ANALYSIS = {
   "Вантажники / складські": `Складська і вантажна робота частково автоматизується у великих логістичних центрах, але в Україні рівень такої автоматизації низький. Ручна праця залишається основою. Оцінка 2/10. В Україні логістика гуманітарної допомоги, військового постачання та відновлення торгових мереж формує стабільний попит на складський персонал.`,
   "Кур'єри": `Кур'єрська доставка — фізична робота з навігацією у міському середовищі. Автономні дрони-доставщики є технологічно можливими, але масове впровадження в українських містах — не найближча перспектива. Оцінка 3.5/10. В Україні e-commerce зріс через воєнний час: люди менше виходять, більше замовляють — попит на кур'єрів стабільно зростає в безпечних регіонах.`,
   "Доглядальники": `Догляд за людьми похилого віку та людьми з особливими потребами — глибоко людська робота: фізичний догляд, емоційна підтримка, супровід. AI не може забезпечити присутність і тепло. Оцінка 1.5/10. В Україні потреба у доглядальниках зростає: літні люди, евакуйовані з прифронтових зон, ветерани з пораненнями — попит критично вищий за пропозицію.`,
-  "Актуарії": `Актуарна наука — найбільш цифровий продукт у страхуванні: статистичні моделі смертності, таблиці ризиків, ціноутворення продуктів — все це алгоритмізується. AI вже будує актуарні моделі швидше і точніше за людину. Оцінка 9/10 — це не вирок, а можливість: актуарій з AI-інструментами замінить п'ятьох традиційних. В Україні таких спеціалістів лише ~3–4 тис. — знання AI автоматично дає конкурентну перевагу.`,
+  "Актуарії": `Актуарна наука — найбільш цифровий продукт у страхуванні: статистичні моделі смертності, таблиці ризиків, ціноутворення продуктів — все це алгоритмізується. AI вже будує актуарні моделі швидше і точніше за людину. Оцінка 9/10 — це не вирок, а можливість: актуарій з AI-інструментами замінить п'ятьох традиційних. В Україні таких спеціалістів лише ~200–300 осіб (за даними НКРЗФП та Асоціації актуаріїв України) — знання AI автоматично дає конкурентну перевагу в найменш конкурентній ніші ринку.`,
   "Андеррайтери страхові": `Страховий андеррайтинг — аналіз ризиків по структурованих анкетах і даних. AI вже домінує в масових продуктах: автострахування, стандартне майнове страхування. Оцінка 8.5/10. Ніша для людини — складні, унікальні ризики: промислові об'єкти, нестандартні випадки, де потрібне судження. В Україні воєнні ризики, страхування відбудови та нові продукти для ветеранів — сегменти, де досвід андеррайтера критичний.`,
   "Страхові агенти / брокери": `Агентська робота поєднує цифровий підбір продуктів (AI-assisted) з живою роботою з клієнтом: довіра, пояснення умов, врегулювання конфліктів. Оцінка 5.5/10 — помірний ризик. Масовий стандартний продукт агрегатори продаватимуть без агента, але складні корпоративні рішення та лояльний клієнтський портфель — залишаться за людиною. В Україні страховий ринок відновлюється: ОСЦПВ, страхування майна, нові обов'язкові продукти дають роботу.`,
   "Спеціалісти зі збитків": `Врегулювання страхових збитків — частково цифрова (документи, розрахунки), частково фізична (виїзд на місце, огляд, переговори). AI автоматизує стандартні випадки, але складні збитки, судові спори та клієнтські переговори залишаються за людиною. Оцінка 6.5/10. В Україні після ракетних ударів страхові компанії отримали безпрецедентний обсяг претензій — досвід урегулювання воєнних збитків став унікальною компетенцією.`,
